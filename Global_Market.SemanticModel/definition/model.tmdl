@@ -1,0 +1,24 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["vw_Dashboard_Completa","d_moedas","vw_Calendario_Dinamico","_Medidas","f_noticias_mercado"]
+
+annotation PBI_ProTooling = ["TMDLView_Desktop","DevMode"]
+
+ref table vw_Dashboard_Completa
+ref table d_moedas
+ref table Parâmetro
+ref table vw_Calendario_Dinamico
+ref table 'Parâmetro 2'
+ref table _Medidas
+ref table f_noticias_mercado
+
+ref cultureInfo pt-BR
+

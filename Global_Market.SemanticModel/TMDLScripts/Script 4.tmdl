@@ -1,0 +1,154 @@
+createOrReplace
+	table _Medidas
+		lineageTag: 5d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a
+
+		measure 'Preco Base BRL' = SUM(vw_Dashboard_Completa[Preco_BRL])
+			formatString: #,##0.00
+			displayFolder: [01] Base\Preços
+			lineageTag: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+
+		measure 'Preco Base USD' = SUM(vw_Dashboard_Completa[Preco_USD])
+			formatString: #,##0.00
+			displayFolder: [01] Base\Preços
+			lineageTag: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+
+		measure 'Market Cap Base BRL' = SUM(vw_Dashboard_Completa[Market_Cap_BRL])
+			formatString: #,##0.00
+			displayFolder: [01] Base\Market Cap
+			lineageTag: c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f
+
+		measure 'Market Cap Base USD' = SUM(vw_Dashboard_Completa[Market_Cap_USD])
+			formatString: #,##0.00
+			displayFolder: [01] Base\Market Cap
+			lineageTag: d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a
+
+		measure 'Preco Selecionado' = 
+				VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+				RETURN IF(_selecao = 0, [Preco Base BRL], [Preco Base USD])
+			formatString: #,##0.00
+			displayFolder: [01] Base
+			lineageTag: e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b
+
+		measure 'Market Cap Selecionado' = 
+				VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+				RETURN IF(_selecao = 0, [Market Cap Base BRL], [Market Cap Base USD])
+			formatString: #,##0.00
+			displayFolder: [01] Base
+			lineageTag: f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c
+
+		measure 'Variacao %' = 
+				VAR _Atual = [Preco Selecionado]
+				VAR _Anterior = CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -1, DAY))
+				RETURN DIVIDE(_Atual - _Anterior, _Anterior)
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: [02] Performance\Variações
+			lineageTag: a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d
+
+		measure 'Variacao Nominal' = [Preco Selecionado] - CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -1, DAY))
+			formatString: #,##0.00
+			displayFolder: [02] Performance\Variações
+			lineageTag: b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e
+
+		measure 'Media Movel 7 Dias' = 
+				AVERAGEX(
+					DATESINPERIOD(vw_Calendario_Dinamico[Data], LASTDATE(vw_Calendario_Dinamico[Data]), -7, DAY),
+					[Preco Selecionado]
+				)
+			formatString: #,##0.00
+			displayFolder: [02] Performance\Médias
+			lineageTag: c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f
+
+		measure 'Media Movel 30 Dias' = 
+				AVERAGEX(
+					DATESINPERIOD(vw_Calendario_Dinamico[Data], LASTDATE(vw_Calendario_Dinamico[Data]), -30, DAY),
+					[Preco Selecionado]
+				)
+			formatString: #,##0.00
+			displayFolder: [02] Performance\Médias
+			lineageTag: d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a
+
+		measure 'Maxima Historica' = 
+				CALCULATE(
+					MAXX(vw_Dashboard_Completa, [Preco Selecionado]),
+					ALL(vw_Calendario_Dinamico)
+				)
+			formatString: #,##0.00
+			displayFolder: [03] Analise Tecnica\Extremos
+			lineageTag: e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b
+
+		measure 'Minima Historica' = 
+				CALCULATE(
+					MINX(vw_Dashboard_Completa, [Preco Selecionado]),
+					ALL(vw_Calendario_Dinamico)
+				)
+			formatString: #,##0.00
+			displayFolder: [03] Analise Tecnica\Extremos
+			lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
+
+		measure 'Drawdown %' = 
+				VAR _Topo = [Maxima Historica]
+				VAR _Atual = [Preco Selecionado]
+				RETURN DIVIDE(_Atual - _Topo, _Topo)
+			formatString: 0.00%
+			displayFolder: [03] Analise Tecnica\Risco
+			lineageTag: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
+
+		measure 'Volatilidade (Desvio Padrao)' = STDEVX.P(vw_Dashboard_Completa, [Variacao %])
+			formatString: 0.00%
+			displayFolder: [03] Analise Tecnica\Risco
+			lineageTag: b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e
+
+		measure 'Preco WoW %' = 
+				VAR _Atual = [Preco Selecionado]
+				VAR _Anterior = CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -7, DAY))
+				RETURN DIVIDE(_Atual - _Anterior, _Anterior)
+			formatString: 0.00%
+			displayFolder: [04] Comparativos\Temporal
+			lineageTag: c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f
+
+		measure 'Preco MoM %' = 
+				VAR _Atual = [Preco Selecionado]
+				VAR _Anterior = CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -1, MONTH))
+				RETURN DIVIDE(_Atual - _Anterior, _Anterior)
+			formatString: 0.00%
+			displayFolder: [04] Comparativos\Temporal
+			lineageTag: d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0a
+
+		measure 'Market Share %' = 
+				VAR _CapAtivo = [Market Cap Selecionado]
+				VAR _CapTotal = CALCULATE([Market Cap Selecionado], ALL(d_moedas))
+				RETURN DIVIDE(_CapAtivo, _CapTotal)
+			formatString: 0.00%
+			displayFolder: [04] Comparativos\Mercado
+			lineageTag: e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1b
+
+		measure 'Cor Condicional Tendencia' = 
+				VAR _var = [Variacao %]
+				RETURN SWITCH(TRUE(), _var > 0, "#00E676", _var < 0, "#FF1744", "#BDBDBD")
+			displayFolder: [05] Storytelling\Visual
+			lineageTag: f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2c
+
+		measure 'Icone Tendencia' = 
+				VAR _var = [Variacao %]
+				RETURN IF(_var > 0, "▲", "▼")
+			displayFolder: [05] Storytelling\Visual
+			lineageTag: a9b0c1d2-e3f4-4a5b-6c7d-8e9f0a1b2c3d
+
+		measure 'Titulo Dinamico Dashboard' = 
+				VAR _Ativo = SELECTEDVALUE(d_moedas[Nome_Completo], "Mercado Global")
+				VAR _Moeda = SELECTEDVALUE('Parâmetro'[Parâmetro], "BRL")
+				RETURN UPPER(_Ativo) & " - ANÁLISE EM " & _Moeda
+			displayFolder: [05] Storytelling\Texto
+			lineageTag: b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4e
+
+		partition _Medidas = m
+			mode: import
+			source =
+					let
+						Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+						#"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", Int64.Type}}),
+						#"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+					in
+						#"Colunas Removidas"
+
+		annotation PBI_ResultType = Table

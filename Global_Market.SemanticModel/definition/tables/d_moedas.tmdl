@@ -1,0 +1,62 @@
+table d_moedas
+	lineageTag: d0d30294-b68d-4a23-9d1d-007b5d8932f4
+
+	column Nome_Completo
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: f7ca93d6-5e95-46bd-b5fb-9008e98f2e22
+		summarizeBy: none
+		sourceColumn: Nome_Completo
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL_Imagem
+		dataType: string
+		sourceProviderType: varchar(500)
+		lineageTag: cf7c17d0-b050-4d97-b6ad-e9ec148953bb
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: URL_Imagem
+
+		annotation SummarizationSetBy = Automatic
+
+	column Simbolo
+		dataType: string
+		sourceProviderType: varchar(25)
+		lineageTag: db83b56a-9dc5-42fc-b700-df29b7903a4e
+		summarizeBy: none
+		sourceColumn: Simbolo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ativo
+		dataType: string
+		lineageTag: 8c8e473b-ac93-4689-bccc-d4bcba961094
+		summarizeBy: none
+		sourceColumn: Ativo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo
+		dataType: string
+		lineageTag: 6a63b740-a2ec-41e4-b95c-6a27c8e36967
+		summarizeBy: none
+		sourceColumn: Tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition d_moedas = m
+		mode: import
+		source =
+				let
+				    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+				    dbo_dim_ativos = Fonte{[Schema="dbo",Item="dim_ativos"]}[Data],
+				    #"Valor Substituído" = Table.ReplaceValue(dbo_dim_ativos,".SA","",Replacer.ReplaceText,{"Ativo"}),
+				    #"Linhas Filtradas" = Table.SelectRows(#"Valor Substituído", each ([Ativo] <> "B3SA3" and [Ativo] <> "^BVSP" and [Ativo] <> "^NDX"))
+				in
+				    #"Linhas Filtradas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

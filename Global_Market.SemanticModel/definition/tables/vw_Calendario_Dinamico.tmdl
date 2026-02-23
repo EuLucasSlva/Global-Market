@@ -1,0 +1,157 @@
+table vw_Calendario_Dinamico
+	lineageTag: 52acfe0b-3afb-4a60-8412-cf3bf478f4d6
+
+	column Data
+		dataType: dateTime
+		isNullable: false
+		formatString: Short Date
+		sourceProviderType: date
+		lineageTag: d8e9a102-a732-4d8d-931c-6dae870e4028
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 3d1e64e8-ee9a-4074-9875-5621d504eae0
+		summarizeBy: sum
+		sourceColumn: Ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 33bd60d5-46f9-41d4-acd1-cdd0047e13b1
+		summarizeBy: sum
+		sourceColumn: Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_Mes
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 8f9f9384-eb6c-4545-a508-7c58fb4433f9
+		summarizeBy: none
+		sourceColumn: Nome_Mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia_Semana
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: f322b425-29e0-4adc-9645-0be386443b36
+		summarizeBy: none
+		sourceColumn: Dia_Semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dias_Passados
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4007fee7-83d7-4648-9043-43b41e03a878
+		summarizeBy: sum
+		sourceColumn: Dias_Passados
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimos_7_Dias
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: 78d702a4-cc30-4ea8-a4df-b059b7dcf55a
+		summarizeBy: none
+		sourceColumn: Ultimos_7_Dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimos_14_Dias
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: 6f0e8603-1dbd-4bc7-99c1-6814be0fd7c2
+		summarizeBy: none
+		sourceColumn: Ultimos_14_Dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimos_30_Dias
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: 5cecbda1-7f65-4be8-a009-124410392e1c
+		summarizeBy: none
+		sourceColumn: Ultimos_30_Dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimos_60_Dias
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: e105261d-0c0d-4d48-98ec-bb8d3a972a95
+		summarizeBy: none
+		sourceColumn: Ultimos_60_Dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimos_90_Dias
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: c7f6021c-0387-41fd-a7be-0c8e89f7b50e
+		summarizeBy: none
+		sourceColumn: Ultimos_90_Dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimos_180_Dias
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: 1535d388-ea03-40d4-9662-b07faca47c3b
+		summarizeBy: none
+		sourceColumn: Ultimos_180_Dias
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ultimo_Ano
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: e0ae06b8-e8c1-476e-95c1-a9d5a5b46722
+		summarizeBy: none
+		sourceColumn: Ultimo_Ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column Todo_Periodo
+		dataType: string
+		isNullable: false
+		sourceProviderType: varchar(3)
+		lineageTag: 4f3d566e-5a0b-46be-a39f-f24dd74d4109
+		summarizeBy: none
+		sourceColumn: Todo_Periodo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition vw_Calendario_Dinamico = m
+		mode: import
+		source =
+				let
+				    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+				    dbo_vw_Calendario_Dinamico = Fonte{[Schema="dbo",Item="vw_Calendario_Dinamico"]}[Data]
+				in
+				    dbo_vw_Calendario_Dinamico
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

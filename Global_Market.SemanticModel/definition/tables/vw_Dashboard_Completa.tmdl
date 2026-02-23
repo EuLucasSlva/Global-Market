@@ -1,0 +1,191 @@
+table vw_Dashboard_Completa
+	lineageTag: af74f420-c402-4e96-b945-290b746d230a
+
+	column Ativo
+		dataType: string
+		sourceProviderType: varchar(max)
+		lineageTag: b7487c40-985d-4ba6-8138-00e883f04944
+		summarizeBy: none
+		sourceColumn: Ativo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: f377dad4-6ad0-4398-96fb-d1cbbaefeb65
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Tipo_Mercado
+		dataType: string
+		lineageTag: aa956392-fa65-4335-965a-30595093855f
+		summarizeBy: none
+		sourceColumn: Tipo_Mercado
+
+		annotation SummarizationSetBy = Automatic
+
+	column Preco_BRL
+		dataType: double
+		formatString: 0.00
+		lineageTag: 5fcfb2e5-efee-4b41-ba0a-3cdde4f48975
+		summarizeBy: sum
+		sourceColumn: Preco_BRL
+
+		annotation SummarizationSetBy = Automatic
+
+	column Preco_USD
+		dataType: double
+		formatString: 0.00
+		lineageTag: 35190f45-ff0c-472d-a10d-f9f6eb94ea29
+		summarizeBy: sum
+		sourceColumn: Preco_USD
+
+		annotation SummarizationSetBy = Automatic
+
+	column Market_Cap_BRL
+		dataType: double
+		lineageTag: e9715da4-4839-4cc7-9eef-ff789562bff7
+		summarizeBy: sum
+		sourceColumn: Market_Cap_BRL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Market_Cap_USD
+		dataType: double
+		lineageTag: dc823b94-5f79-4d44-be8a-a5c5f2453533
+		summarizeBy: sum
+		sourceColumn: Market_Cap_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Preco_Ontem
+		dataType: double
+		lineageTag: cb3fb28b-e55a-42a5-b8e2-2a256e0e6595
+		summarizeBy: sum
+		sourceColumn: Preco_Ontem
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Preco_Ontem_USD
+		dataType: double
+		lineageTag: 067421cd-7b1f-471e-9259-88ca0e778a72
+		summarizeBy: sum
+		sourceColumn: Preco_Ontem_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Variacao_Percentual
+		dataType: double
+		lineageTag: 22f9ae86-2035-4086-8c96-6401a0ddc957
+		summarizeBy: sum
+		sourceColumn: Variacao_Percentual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Moeda_Original
+		dataType: string
+		lineageTag: 6381b109-1d7d-457f-8976-e9bd06f9f649
+		summarizeBy: none
+		sourceColumn: Moeda_Original
+
+		annotation SummarizationSetBy = Automatic
+
+	column Open_BRL
+		dataType: double
+		lineageTag: 9d3738b1-0847-4f06-8675-17f807c2a311
+		summarizeBy: sum
+		sourceColumn: Open_BRL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column High_BRL
+		dataType: double
+		lineageTag: cac2acd3-5647-4063-bca5-985ff1a96f78
+		summarizeBy: sum
+		sourceColumn: High_BRL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Low_BRL
+		dataType: double
+		lineageTag: d2366e0d-3c89-4ae1-8cf3-9e5c4b80ca19
+		summarizeBy: sum
+		sourceColumn: Low_BRL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Open_USD
+		dataType: double
+		lineageTag: 8edc20eb-61d2-44b7-9ce5-843269dc0f4a
+		summarizeBy: sum
+		sourceColumn: Open_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column High_USD
+		dataType: double
+		lineageTag: c207ead5-e0db-42d6-ac94-5ccff25747b3
+		summarizeBy: sum
+		sourceColumn: High_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Low_USD
+		dataType: double
+		lineageTag: d4faff70-35ed-4fd7-8177-9a0b046d5247
+		summarizeBy: sum
+		sourceColumn: Low_USD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Volume
+		dataType: double
+		lineageTag: adf56089-9633-4167-ae74-62f582998022
+		summarizeBy: sum
+		sourceColumn: Volume
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition vw_Dashboard_Completa = m
+		mode: import
+		source =
+				let
+				    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+				    dbo_vw_Mercado_Global = Fonte{[Schema="dbo",Item="vw_Mercado_Global"]}[Data],
+				    #"Linhas Filtradas" = Table.SelectRows(dbo_vw_Mercado_Global, each ([Ativo] <> "^BVSP" and [Ativo] <> "^NDX"))
+				in
+				    #"Linhas Filtradas"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
+

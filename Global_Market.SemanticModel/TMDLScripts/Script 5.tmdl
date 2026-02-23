@@ -1,0 +1,963 @@
+createOrReplace
+
+	model Model
+		culture: pt-BR
+		defaultPowerBIDataSourceVersion: powerBI_V3
+		sourceQueryCulture: pt-BR
+		dataAccessOptions
+			legacyRedirects
+			returnErrorValuesAsNull
+
+		table vw_Dashboard_Completa
+			lineageTag: af74f420-c402-4e96-b945-290b746d230a
+
+			column Ativo
+				dataType: string
+				sourceProviderType: varchar(max)
+				lineageTag: b7487c40-985d-4ba6-8138-00e883f04944
+				summarizeBy: none
+				sourceColumn: Ativo
+
+				annotation SummarizationSetBy = Automatic
+
+			column Date
+				dataType: dateTime
+				formatString: Short Date
+				lineageTag: f377dad4-6ad0-4398-96fb-d1cbbaefeb65
+				summarizeBy: none
+				sourceColumn: Date
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation UnderlyingDateTimeDataType = Date
+
+			column Tipo_Mercado
+				dataType: string
+				lineageTag: aa956392-fa65-4335-965a-30595093855f
+				summarizeBy: none
+				sourceColumn: Tipo_Mercado
+
+				annotation SummarizationSetBy = Automatic
+
+			column Preco_BRL
+				dataType: double
+				formatString: 0.00
+				lineageTag: 5fcfb2e5-efee-4b41-ba0a-3cdde4f48975
+				summarizeBy: sum
+				sourceColumn: Preco_BRL
+
+				annotation SummarizationSetBy = Automatic
+
+			column Preco_USD
+				dataType: double
+				formatString: 0.00
+				lineageTag: 35190f45-ff0c-472d-a10d-f9f6eb94ea29
+				summarizeBy: sum
+				sourceColumn: Preco_USD
+
+				annotation SummarizationSetBy = Automatic
+
+			column Market_Cap_BRL
+				dataType: double
+				lineageTag: e9715da4-4839-4cc7-9eef-ff789562bff7
+				summarizeBy: sum
+				sourceColumn: Market_Cap_BRL
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Market_Cap_USD
+				dataType: double
+				lineageTag: dc823b94-5f79-4d44-be8a-a5c5f2453533
+				summarizeBy: sum
+				sourceColumn: Market_Cap_USD
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Preco_Ontem
+				dataType: double
+				lineageTag: cb3fb28b-e55a-42a5-b8e2-2a256e0e6595
+				summarizeBy: sum
+				sourceColumn: Preco_Ontem
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Preco_Ontem_USD
+				dataType: double
+				lineageTag: 067421cd-7b1f-471e-9259-88ca0e778a72
+				summarizeBy: sum
+				sourceColumn: Preco_Ontem_USD
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Variacao_Percentual
+				dataType: double
+				lineageTag: 22f9ae86-2035-4086-8c96-6401a0ddc957
+				summarizeBy: sum
+				sourceColumn: Variacao_Percentual
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Moeda_Original
+				dataType: string
+				lineageTag: 6381b109-1d7d-457f-8976-e9bd06f9f649
+				summarizeBy: none
+				sourceColumn: Moeda_Original
+
+				annotation SummarizationSetBy = Automatic
+
+			column Open_BRL
+				dataType: double
+				lineageTag: 9d3738b1-0847-4f06-8675-17f807c2a311
+				summarizeBy: sum
+				sourceColumn: Open_BRL
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column High_BRL
+				dataType: double
+				lineageTag: cac2acd3-5647-4063-bca5-985ff1a96f78
+				summarizeBy: sum
+				sourceColumn: High_BRL
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Low_BRL
+				dataType: double
+				lineageTag: d2366e0d-3c89-4ae1-8cf3-9e5c4b80ca19
+				summarizeBy: sum
+				sourceColumn: Low_BRL
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Open_USD
+				dataType: double
+				lineageTag: 8edc20eb-61d2-44b7-9ce5-843269dc0f4a
+				summarizeBy: sum
+				sourceColumn: Open_USD
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column High_USD
+				dataType: double
+				lineageTag: c207ead5-e0db-42d6-ac94-5ccff25747b3
+				summarizeBy: sum
+				sourceColumn: High_USD
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			column Low_USD
+				dataType: double
+				lineageTag: d4faff70-35ed-4fd7-8177-9a0b046d5247
+				summarizeBy: sum
+				sourceColumn: Low_USD
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			partition vw_Dashboard_Completa = m
+				mode: import
+				source =
+						let
+						    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+						    dbo_vw_Mercado_Global = Fonte{[Schema="dbo",Item="vw_Mercado_Global"]}[Data]
+						in
+						    dbo_vw_Mercado_Global
+
+			annotation PBI_ResultType = Table
+
+			annotation PBI_NavigationStepName = Navegação
+
+		table d_moedas
+			lineageTag: d0d30294-b68d-4a23-9d1d-007b5d8932f4
+
+			column Nome_Completo
+				dataType: string
+				sourceProviderType: varchar(50)
+				lineageTag: f7ca93d6-5e95-46bd-b5fb-9008e98f2e22
+				summarizeBy: none
+				sourceColumn: Nome_Completo
+
+				annotation SummarizationSetBy = Automatic
+
+			column URL_Imagem
+				dataType: string
+				sourceProviderType: varchar(500)
+				lineageTag: cf7c17d0-b050-4d97-b6ad-e9ec148953bb
+				dataCategory: ImageUrl
+				summarizeBy: none
+				sourceColumn: URL_Imagem
+
+				annotation SummarizationSetBy = Automatic
+
+			column Simbolo
+				dataType: string
+				sourceProviderType: varchar(25)
+				lineageTag: db83b56a-9dc5-42fc-b700-df29b7903a4e
+				summarizeBy: none
+				sourceColumn: Simbolo
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ativo
+				dataType: string
+				lineageTag: 8c8e473b-ac93-4689-bccc-d4bcba961094
+				summarizeBy: none
+				sourceColumn: Ativo
+
+				annotation SummarizationSetBy = Automatic
+
+			column Tipo
+				dataType: string
+				lineageTag: 6a63b740-a2ec-41e4-b95c-6a27c8e36967
+				summarizeBy: none
+				sourceColumn: Tipo
+
+				annotation SummarizationSetBy = Automatic
+
+			partition d_moedas = m
+				mode: import
+				source =
+						let
+						    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+						    dbo_dim_ativos = Fonte{[Schema="dbo",Item="dim_ativos"]}[Data]
+						in
+						    dbo_dim_ativos
+
+			annotation PBI_NavigationStepName = Navegação
+
+			annotation PBI_ResultType = Table
+
+		table Parâmetro
+			lineageTag: 4ae3241a-a27b-431a-8bbb-85265dfbecd0
+
+			column Parâmetro
+				lineageTag: 3884d13b-5eb4-4054-a4d8-6d98be622cda
+				summarizeBy: none
+				sourceColumn: [Value1]
+				sortByColumn: 'Parâmetro Pedido'
+
+				relatedColumnDetails
+					groupByColumn: 'Parâmetro Campos'
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Parâmetro Campos'
+				isHidden
+				lineageTag: 4fe4934d-7ff3-40f2-8100-f31606a1a5cc
+				summarizeBy: none
+				sourceColumn: [Value2]
+				sortByColumn: 'Parâmetro Pedido'
+
+				extendedProperty ParameterMetadata = {"version":3,"kind":2}
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Parâmetro Pedido'
+				isHidden
+				formatString: 0
+				lineageTag: ddab8363-b02d-4da6-82aa-4b6fd1774ad7
+				summarizeBy: sum
+				sourceColumn: [Value3]
+
+				annotation SummarizationSetBy = Automatic
+
+			partition Parâmetro = calculated
+				mode: import
+				source =
+						{
+						    ("BRL", NAMEOF('vw_Dashboard_Completa'[Market_Cap_BRL]), 0),
+						    ("USD", NAMEOF('vw_Dashboard_Completa'[Market_Cap_USD]), 1)
+						}
+
+			annotation PBI_Id = 9468e39082aa4991a521d5e81b552581
+
+		table vw_Calendario_Dinamico
+			lineageTag: 52acfe0b-3afb-4a60-8412-cf3bf478f4d6
+
+			column Data
+				dataType: dateTime
+				isNullable: false
+				formatString: Short Date
+				sourceProviderType: date
+				lineageTag: d8e9a102-a732-4d8d-931c-6dae870e4028
+				summarizeBy: none
+				sourceColumn: Data
+
+				annotation SummarizationSetBy = Automatic
+
+				annotation UnderlyingDateTimeDataType = Date
+
+			column Ano
+				dataType: int64
+				formatString: 0
+				sourceProviderType: int
+				lineageTag: 3d1e64e8-ee9a-4074-9875-5621d504eae0
+				summarizeBy: none
+				sourceColumn: Ano
+
+				annotation SummarizationSetBy = Automatic
+
+			column Mes
+				dataType: int64
+				formatString: 0
+				sourceProviderType: int
+				lineageTag: 33bd60d5-46f9-41d4-acd1-cdd0047e13b1
+				summarizeBy: none
+				sourceColumn: Mes
+
+				annotation SummarizationSetBy = Automatic
+
+			column Nome_Mes
+				dataType: string
+				sourceProviderType: varchar(20)
+				lineageTag: 8f9f9384-eb6c-4545-a508-7c58fb4433f9
+				summarizeBy: none
+				sourceColumn: Nome_Mes
+
+				annotation SummarizationSetBy = Automatic
+
+			column Dia_Semana
+				dataType: string
+				sourceProviderType: varchar(20)
+				lineageTag: f322b425-29e0-4adc-9645-0be386443b36
+				summarizeBy: none
+				sourceColumn: Dia_Semana
+
+				annotation SummarizationSetBy = Automatic
+
+			column Dias_Passados
+				dataType: int64
+				formatString: 0
+				sourceProviderType: int
+				lineageTag: 4007fee7-83d7-4648-9043-43b41e03a878
+				summarizeBy: none
+				sourceColumn: Dias_Passados
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimos_7_Dias
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: 78d702a4-cc30-4ea8-a4df-b059b7dcf55a
+				summarizeBy: none
+				sourceColumn: Ultimos_7_Dias
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimos_14_Dias
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: 6f0e8603-1dbd-4bc7-99c1-6814be0fd7c2
+				summarizeBy: none
+				sourceColumn: Ultimos_14_Dias
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimos_30_Dias
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: 5cecbda1-7f65-4be8-a009-124410392e1c
+				summarizeBy: none
+				sourceColumn: Ultimos_30_Dias
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimos_60_Dias
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: e105261d-0c0d-4d48-98ec-bb8d3a972a95
+				summarizeBy: none
+				sourceColumn: Ultimos_60_Dias
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimos_90_Dias
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: c7f6021c-0387-41fd-a7be-0c8e89f7b50e
+				summarizeBy: none
+				sourceColumn: Ultimos_90_Dias
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimos_180_Dias
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: 1535d388-ea03-40d4-9662-b07faca47c3b
+				summarizeBy: none
+				sourceColumn: Ultimos_180_Dias
+
+				annotation SummarizationSetBy = Automatic
+
+			column Ultimo_Ano
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: e0ae06b8-e8c1-476e-95c1-a9d5a5b46722
+				summarizeBy: none
+				sourceColumn: Ultimo_Ano
+
+				annotation SummarizationSetBy = Automatic
+
+			column Todo_Periodo
+				dataType: string
+				isNullable: false
+				sourceProviderType: varchar(3)
+				lineageTag: 4f3d566e-5a0b-46be-a39f-f24dd74d4109
+				summarizeBy: none
+				sourceColumn: Todo_Periodo
+
+				annotation SummarizationSetBy = Automatic
+
+			partition vw_Calendario_Dinamico = m
+				mode: import
+				source =
+						let
+						    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+						    dbo_vw_Calendario_Dinamico = Fonte{[Schema="dbo",Item="vw_Calendario_Dinamico"]}[Data]
+						in
+						    dbo_vw_Calendario_Dinamico
+
+			annotation PBI_ResultType = Table
+
+			annotation PBI_NavigationStepName = Navegação
+
+		table 'Parâmetro 2'
+			lineageTag: 99538d5b-6e3e-4002-9b1e-e0de10ff8bce
+
+			column Parâmetro
+				lineageTag: 87cf00e8-b3ed-4be6-b422-01ed3562f939
+				summarizeBy: none
+				sourceColumn: [Value1]
+				sortByColumn: 'Parâmetro Pedido'
+
+				relatedColumnDetails
+					groupByColumn: 'Parâmetro Campos'
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Parâmetro Campos'
+				isHidden
+				lineageTag: d4fd7a98-749c-4502-b61d-371948f280b0
+				summarizeBy: none
+				sourceColumn: [Value2]
+				sortByColumn: 'Parâmetro Pedido'
+
+				extendedProperty ParameterMetadata = {"version":3,"kind":2}
+
+				annotation SummarizationSetBy = Automatic
+
+			column 'Parâmetro Pedido'
+				isHidden
+				formatString: 0
+				lineageTag: 09463d6a-d9a8-4092-9246-6a5ccd9c3037
+				summarizeBy: sum
+				sourceColumn: [Value3]
+
+				annotation SummarizationSetBy = Automatic
+
+			partition 'Parâmetro 2' = calculated
+				mode: import
+				source =
+						{
+						    ("Últimos 7 Dias", NAMEOF('vw_Calendario_Dinamico'[Ultimos_7_Dias]), 0),
+						    ("Últimos 14 Dias", NAMEOF('vw_Calendario_Dinamico'[Ultimos_14_Dias]), 1),
+						    ("Últimos 30 Dias", NAMEOF('vw_Calendario_Dinamico'[Ultimos_30_Dias]), 2),
+						    ("Últimos 60 Dias", NAMEOF('vw_Calendario_Dinamico'[Ultimos_60_Dias]), 3),
+						    ("Últimos 90 Dias", NAMEOF('vw_Calendario_Dinamico'[Ultimos_90_Dias]), 4),
+						    ("Últimos 180 Dias", NAMEOF('vw_Calendario_Dinamico'[Ultimos_180_Dias]), 5),
+						    ("Último Ano", NAMEOF('vw_Calendario_Dinamico'[Ultimo_Ano]), 6),
+						    ("Todo Periodo", NAMEOF('vw_Calendario_Dinamico'[Todo_Periodo]), 7)
+						}
+
+			annotation PBI_Id = 784f519e29614142973a5a93cf346a13
+
+		table _Medidas
+			lineageTag: 5d8e9f0a-1b2c-3d4e-5f6a-7b8c9d0e1f2a
+
+			measure 'Preco Selecionado' =
+					VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+					RETURN IF(_selecao = 0, [Preco Base BRL], [Preco Base USD])
+				formatString: #,##0.00
+				displayFolder: [01] Base
+				lineageTag: e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b
+
+			measure 'Market Cap Selecionado' =
+					VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+					RETURN IF(_selecao = 0, [Market Cap Base BRL], [Market Cap Base USD])
+				formatString: #,##0.00
+				displayFolder: [01] Base
+				lineageTag: f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c
+
+			measure 'Market Cap Base BRL' = SUM(vw_Dashboard_Completa[Market_Cap_BRL])
+				formatString: #,##0.00
+				displayFolder: [01] Base\Market Cap
+				lineageTag: c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f
+
+			measure 'Variacao Dinamica %' = ```
+					
+					VAR _IndexSelecionado = SELECTEDVALUE('Parâmetro 2'[Parâmetro Pedido])
+					
+					VAR _Dias = 
+					    SWITCH( _IndexSelecionado,
+					        0, 7,   -- Ultimos_7_Dias
+					        1, 14,  -- Ultimos_14_Dias
+					        2, 30,  -- Ultimos_30_Dias
+					        3, 60,  -- Ultimos_60_Dias
+					        4, 90,  -- Ultimos_90_Dias
+					        5, 180, -- Ultimos_180_Dias
+					        6, 365, -- Ultimo_Ano
+					        7, 0    -- Todo Periodo
+					    )
+					
+					VAR _DataMaxPeriodo = 
+					    CALCULATE(
+					        MAX(vw_Calendario_Dinamico[Data]),
+					        SWITCH( _IndexSelecionado,
+					            0, vw_Calendario_Dinamico[Ultimos_7_Dias] = "Sim",
+					            1, vw_Calendario_Dinamico[Ultimos_14_Dias] = "Sim",
+					            2, vw_Calendario_Dinamico[Ultimos_30_Dias] = "Sim",
+					            3, vw_Calendario_Dinamico[Ultimos_60_Dias] = "Sim",
+					            4, vw_Calendario_Dinamico[Ultimos_90_Dias] = "Sim",
+					            5, vw_Calendario_Dinamico[Ultimos_180_Dias] = "Sim",
+					            6, vw_Calendario_Dinamico[Ultimo_Ano] = "Sim",
+					            7, MAX(vw_Calendario_Dinamico[Data]) 
+					        ),
+					        REMOVEFILTERS(vw_Calendario_Dinamico)
+					    )
+					
+					VAR _Atual = 
+					    CALCULATE(
+					        [Preco Selecionado],
+					        DATESINPERIOD(
+					            vw_Calendario_Dinamico[Data], 
+					            _DataMaxPeriodo, 
+					            -_Dias, 
+					            DAY
+					        )
+					    )
+					
+					VAR _Anterior = 
+					    CALCULATE(
+					        [Preco Selecionado],
+					        DATESINPERIOD(
+					            vw_Calendario_Dinamico[Data], 
+					            _DataMaxPeriodo - _Dias, 
+					            -_Dias, 
+					            DAY
+					        ),
+					        REMOVEFILTERS(vw_Calendario_Dinamico) 
+					    )
+					
+					RETURN
+					    IF(
+					        _Dias > 0 && NOT ISBLANK(_Anterior),
+					        DIVIDE(_Atual - _Anterior, _Anterior)
+					    )
+					```
+				formatString: 0.00%;-0.00%;0.00%
+				displayFolder: [02] Performance\Variações
+				lineageTag: a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d
+
+			measure 'Drawdown %' =
+					VAR _Topo = [Maxima Historica]
+					VAR _Atual = [Preco Selecionado]
+					RETURN DIVIDE(_Atual - _Topo, _Topo)
+				formatString: 0.00%
+				displayFolder: [03] Analise Tecnica\Risco
+				lineageTag: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
+
+			measure 'Variacao Nominal' = [Preco Selecionado] - CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -1, DAY))
+				formatString: #,##0.00
+				displayFolder: [02] Performance\Variações
+				lineageTag: b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e
+
+			measure 'Icone Tendencia' =
+					VAR _var = [Variacao Dinamica %]
+					RETURN IF(_var > 0, "▲", "▼")
+				displayFolder: [05] Storytelling\Visual
+				lineageTag: a9b0c1d2-e3f4-4a5b-6c7d-8e9f0a1b2c3d
+
+			measure 'Media Movel 30 Dias' = ```
+					
+					VAR _UltimaDataVisivel = MAX('vw_Calendario_Dinamico'[Data])
+					RETURN
+					    AVERAGEX(
+					        FILTER(
+					            ALLSELECTED('vw_Calendario_Dinamico'),
+					            'vw_Calendario_Dinamico'[Data] > _UltimaDataVisivel - 30 && 
+					            'vw_Calendario_Dinamico'[Data] <= _UltimaDataVisivel
+					        ),
+					        [Preco Selecionado]
+					    )
+					
+					```
+				formatString: #,##0.00
+				displayFolder: [02] Performance\Médias
+				lineageTag: d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a
+
+			measure 'Preco Base BRL' = SUM(vw_Dashboard_Completa[Preco_BRL])
+				formatString: #,##0.00
+				displayFolder: [01] Base\Preços
+				lineageTag: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+
+			measure 'Preco Base USD' = SUM(vw_Dashboard_Completa[Preco_USD])
+				formatString: #,##0.00
+				displayFolder: [01] Base\Preços
+				lineageTag: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+
+			measure 'Market Cap Base USD' = SUM(vw_Dashboard_Completa[Market_Cap_USD])
+				formatString: #,##0.00
+				displayFolder: [01] Base\Market Cap
+				lineageTag: d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a
+
+			measure 'Media Movel 7 Dias' =
+					AVERAGEX(
+						DATESINPERIOD(vw_Calendario_Dinamico[Data], LASTDATE(vw_Calendario_Dinamico[Data]), -7, DAY),
+						[Preco Selecionado]
+					)
+				formatString: #,##0.00
+				displayFolder: [02] Performance\Médias
+				lineageTag: c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f
+
+			measure 'Maxima Historica' =
+					CALCULATE(
+						MAXX(vw_Dashboard_Completa, [Preco Selecionado]),
+						ALL(vw_Calendario_Dinamico)
+					)
+				formatString: #,##0.00
+				displayFolder: [03] Analise Tecnica\Extremos
+				lineageTag: e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b
+
+			measure 'Minima Historica' =
+					CALCULATE(
+						MINX(vw_Dashboard_Completa, [Preco Selecionado]),
+						ALL(vw_Calendario_Dinamico)
+					)
+				formatString: #,##0.00
+				displayFolder: [03] Analise Tecnica\Extremos
+				lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
+
+			measure 'Volatilidade (Desvio Padrao)' = STDEVX.P(vw_Dashboard_Completa, [Variacao Dinamica %])
+				formatString: 0.00%
+				displayFolder: [03] Analise Tecnica\Risco
+				lineageTag: b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e
+
+			measure 'Preco WoW %' =
+					VAR _Atual = [Preco Selecionado]
+					VAR _Anterior = CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -7, DAY))
+					RETURN DIVIDE(_Atual - _Anterior, _Anterior)
+				formatString: 0.00%
+				displayFolder: [04] Comparativos\Temporal
+				lineageTag: c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f
+
+			measure 'Preco MoM %' =
+					VAR _Atual = [Preco Selecionado]
+					VAR _Anterior = CALCULATE([Preco Selecionado], DATEADD(vw_Calendario_Dinamico[Data], -1, MONTH))
+					RETURN DIVIDE(_Atual - _Anterior, _Anterior)
+				formatString: 0.00%
+				displayFolder: [04] Comparativos\Temporal
+				lineageTag: d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0a
+
+			measure 'Market Share %' =
+					VAR _CapAtivo = [Market Cap Selecionado]
+					VAR _CapTotal = CALCULATE([Market Cap Selecionado], ALL(d_moedas))
+					RETURN DIVIDE(_CapAtivo, _CapTotal)
+				formatString: 0.00%
+				displayFolder: [04] Comparativos\Mercado
+				lineageTag: e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1b
+
+			measure 'Cor Condicional Tendencia' =
+					VAR _var = [Variacao Dinamica %]
+					RETURN SWITCH(TRUE(), _var > 0, "#00E676", _var < 0, "#FF1744", "#BDBDBD")
+				displayFolder: [05] Storytelling\Visual
+				lineageTag: f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2c
+
+			measure 'Titulo Dinamico Dashboard' =
+					VAR _Ativo = SELECTEDVALUE(d_moedas[Nome_Completo], "Mercado Global")
+					VAR _Moeda = SELECTEDVALUE('Parâmetro'[Parâmetro], "BRL")
+					RETURN UPPER(_Ativo) & " - ANÁLISE EM " & _Moeda
+				displayFolder: [05] Storytelling\Texto
+				lineageTag: b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4e
+
+			measure 'Preco Minigrafico Dinamico' = ```
+					
+					VAR _IndexSelecionado = SELECTEDVALUE('Parâmetro 2'[Parâmetro Pedido])
+					
+					VAR _Dias = 
+					    SWITCH( _IndexSelecionado,
+					        0, 7, 
+					        1, 14, 
+					        2, 30, 
+					        3, 60, 
+					        4, 90, 
+					        5, 180, 
+					        6, 365,
+					        9999 -- Um número grande para "Todo Período"
+					    )
+					
+					-- Pegamos a última data global disponível no contexto
+					VAR _DataMax = CALCULATE(MAX(vw_Calendario_Dinamico[Data]), ALLSELECTED(vw_Calendario_Dinamico))
+					
+					RETURN
+					CALCULATE(
+					    [Preco Selecionado],
+					    DATESINPERIOD(
+					        vw_Calendario_Dinamico[Data],
+					        _DataMax,
+					        -_Dias,
+					        DAY
+					    )
+					)
+					```
+				displayFolder: [02] Performance\Variações
+				lineageTag: 7ecd61e6-d568-4daf-908f-03a6ccb9518d
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Ocultar Datas Minigrafico' = ```
+					
+					VAR _IndexSelecionado = SELECTEDVALUE('Parâmetro 2'[Parâmetro Pedido])
+					
+					VAR _Dias = 
+					    SWITCH( _IndexSelecionado,
+					        0, 7, 1, 14, 2, 30, 3, 60, 4, 90, 5, 180, 6, 365, 
+					        9999 -- Todo período
+					    )
+					
+					VAR _DataMax = CALCULATE(MAX(vw_Calendario_Dinamico[Data]), ALLSELECTED(vw_Calendario_Dinamico))
+					VAR _DataMin = _DataMax - _Dias
+					
+					-- Verifica se a data da linha está dentro do range selecionado
+					RETURN
+					IF(
+					    MAX(vw_Calendario_Dinamico[Data]) > _DataMin && MAX(vw_Calendario_Dinamico[Data]) <= _DataMax,
+					    1,
+					    0
+					)
+					```
+				formatString: 0
+				lineageTag: 218a9734-4454-4314-b96b-4a1a453aea5c
+
+			measure 'Eixo Y Maximo' = ```
+					
+					VAR _MaxPreco = 
+					    MAXX(
+					        ALLSELECTED('vw_Calendario_Dinamico'), 
+					        [Preco Selecionado]
+					    )
+					VAR _MaxMedia = 
+					    MAXX(
+					        ALLSELECTED('vw_Calendario_Dinamico'), 
+					        [Media Movel 30 Dias]
+					    )
+					
+					RETURN 
+					    MAX(_MaxPreco, _MaxMedia) * 1.1
+					```
+				displayFolder: [05] Storytelling
+				lineageTag: 52fc527a-188c-4297-b0fd-abe6c4b423c0
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Eixo Y Minimo' = ```
+					
+					VAR _MinPreco = 
+					    MINX(
+					        ALLSELECTED('vw_Calendario_Dinamico'), 
+					        [Preco Selecionado]
+					    )
+					VAR _MinMedia = 
+					    MINX(
+					        ALLSELECTED('vw_Calendario_Dinamico'), 
+					        [Media Movel 30 Dias]
+					    )
+					
+					RETURN 
+					    MIN(_MinPreco, _MinMedia) * 0.9
+					```
+				displayFolder: [05] Storytelling
+				lineageTag: 4188292f-e11d-4afe-8da5-72140bc18412
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure 'Preco Atual' = ```
+					
+					LASTNONBLANKVALUE(
+					    vw_Calendario_Dinamico[Data], 
+					    [Preco Selecionado]
+					)
+					```
+				formatString: 0.00
+				displayFolder: [01] Base\Preços
+				lineageTag: 66865c03-3d58-4e2b-aef4-8b1970bbe709
+
+			measure 'Variacao 24h %' = ```
+					
+					VAR _UltimaDataComDados = 
+					    MAXX(
+					        FILTER(
+					            ALLSELECTED('vw_Calendario_Dinamico'),
+					            NOT ISBLANK([Preco Selecionado])
+					        ),
+					        'vw_Calendario_Dinamico'[Data]
+					    )
+					
+					VAR _DataOntem = _UltimaDataComDados - 1
+					
+					VAR _PrecoHoje = 
+					    CALCULATE(
+					        [Preco Selecionado],
+					        'vw_Calendario_Dinamico'[Data] = _UltimaDataComDados,
+					        REMOVEFILTERS('vw_Calendario_Dinamico')
+					    )
+					
+					VAR _PrecoOntem = 
+					    CALCULATE(
+					        [Preco Selecionado],
+					        'vw_Calendario_Dinamico'[Data] = _DataOntem,
+					        REMOVEFILTERS('vw_Calendario_Dinamico')
+					    )
+					
+					RETURN
+					    IF(
+					        NOT ISBLANK(_PrecoHoje) && NOT ISBLANK(_PrecoOntem),
+					        DIVIDE(_PrecoHoje - _PrecoOntem, _PrecoOntem)
+					    )
+					```
+				formatString: 0.00%;-0.00%;0.00%
+				displayFolder: [02] Performance\Variações
+				lineageTag: 17e6f3ad-fb66-47a6-a1bd-3ecf3fff6dcf
+
+			measure Atual = ```
+					
+					VAR _DataHoje = MAX(vw_Calendario_Dinamico[Data])
+					VAR _DataOntem = _DataHoje - 1
+					
+					RETURN
+					    CALCULATE(
+					        [Preco Selecionado], 
+					        vw_Calendario_Dinamico[Data] = _DataHoje,
+					        REMOVEFILTERS(vw_Calendario_Dinamico[Data]) 
+					    )
+					
+					```
+				displayFolder: [01] Base\Preços
+				lineageTag: 611427b3-576f-407a-a4f9-a55f1bcf0a09
+
+				annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+			measure St_preco_atual = ```
+					
+					VAR _Selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+					VAR _Parametro = 
+					IF(
+					    _Selecao = 0, "(R$)", "($)")
+					
+					RETURN
+					
+					"Preço Atual " & _Parametro
+					```
+				displayFolder: [05] Storytelling
+				lineageTag: a113c6d6-1ab4-426f-9d5b-d9b5aa7edfb3
+
+			measure St_variacao = ```
+					
+					VAR _Selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+					VAR _Parametro = 
+					IF(
+					    _Selecao = 0, "(R$)", "($)")
+					
+					RETURN
+					
+					"Variação 24h % " & _Parametro
+					```
+				displayFolder: [05] Storytelling
+				lineageTag: 4bee4feb-0e57-4825-a48c-14d3a16932c8
+
+			measure St_Maxima = ```
+					
+					VAR _Selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+					VAR _Parametro = 
+					IF(
+					    _Selecao = 0, "(R$)", "($)")
+					
+					RETURN
+					
+					"Máxima Histórica " & _Parametro
+					```
+				displayFolder: [05] Storytelling
+				lineageTag: 052c6e63-9626-41ca-8426-6b3147af8e18
+
+			measure St_Minima = ```
+					
+					VAR _Selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido])
+					VAR _Parametro = 
+					IF(
+					    _Selecao = 0, "(R$)", "($)")
+					
+					RETURN
+					
+					"Mínima Histórica " & _Parametro
+					```
+				displayFolder: [05] Storytelling
+				lineageTag: 453c3550-7991-4689-939a-30541d7b1fc4
+
+			partition _Medidas = m
+				mode: import
+				source =
+						let
+							Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+							#"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", Int64.Type}}),
+							#"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+						in
+							#"Colunas Removidas"
+
+			annotation PBI_ResultType = Table
+
+		relationship AutoDetected_751b370a-fd0c-46b1-a546-df9c28ca4f3e
+			fromColumn: vw_Dashboard_Completa.Ativo
+			toColumn: d_moedas.Ativo
+
+		relationship 0da41097-b945-e8a4-8b47-0a2127ba72d4
+			fromColumn: vw_Dashboard_Completa.Date
+			toColumn: vw_Calendario_Dinamico.Data
+
+		cultureInfo pt-BR
+
+			linguisticMetadata = {"Version":"4.1.0","Language":"en-US","Entities":{"d_moeda.URL_imagem":{"Definition":{"Binding":{"ConceptualEntity":"d_moedas","ConceptualProperty":"URL_Imagem"}},"State":"Generated","Terms":[{"URL imagem":{"State":"Generated"}},{"URL_Imagem":{"Type":"Noun","State":"Generated","Weight":0.99}},{"website imagem":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.6}},{"site imagem":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.582}},{"web address imagem":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.471}}]},"d_moeda.simbolo":{"Definition":{"Binding":{"ConceptualEntity":"d_moedas","ConceptualProperty":"Simbolo"}},"State":"Generated","Terms":[{"simbolo":{"State":"Generated"}}]},"vw_dashboard_completa":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"}},"State":"Generated","Terms":[{"vw dashboard completa":{"State":"Generated"}},{"vw_Dashboard_Completa":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_dashboard_completa.ativo":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Ativo"}},"State":"Generated","Visibility":{"Value":"Hidden"},"Terms":[{"ativo":{"State":"Generated"}}]},"vw_dashboard_completa.date":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Date"}},"State":"Generated","Terms":[{"date":{"State":"Generated"}},{"moment":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.736}},{"period":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.714}}],"SemanticType":"Time"},"vw_dashboard_completa.tipo_mercado":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Tipo_Mercado"}},"State":"Generated","Terms":[{"tipo mercado":{"State":"Generated"}},{"Tipo_Mercado":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_dashboard_completa.preco_BRL":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Preco_BRL"}},"State":"Generated","Terms":[{"preco BRL":{"State":"Generated"}},{"Preco_BRL":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_dashboard_completa.preco_USD":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Preco_USD"}},"State":"Generated","Terms":[{"preco USD":{"State":"Generated"}},{"Preco_USD":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_dashboard_completa.market_cap_BRL":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Market_Cap_BRL"}},"State":"Generated","Terms":[{"market cap BRL":{"State":"Generated"}},{"Market_Cap_BRL":{"Type":"Noun","State":"Generated","Weight":0.99}},{"BRL":{"State":"Generated","Weight":0.97}},{"cap BRL":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.market_cap_USD":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Market_Cap_USD"}},"State":"Generated","Terms":[{"market cap USD":{"State":"Generated"}},{"Market_Cap_USD":{"Type":"Noun","State":"Generated","Weight":0.99}},{"USD":{"State":"Generated","Weight":0.97}},{"cap USD":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.preco_ontem":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Preco_Ontem"}},"State":"Generated","Terms":[{"preco ontem":{"State":"Generated"}},{"Preco_Ontem":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_dashboard_completa.preco_ontem_USD":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Preco_Ontem_USD"}},"State":"Generated","Terms":[{"preco ontem USD":{"State":"Generated"}},{"Preco_Ontem_USD":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_dashboard_completa.variacao_percentual":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Variacao_Percentual"}},"State":"Generated","Terms":[{"variacao percentual":{"State":"Generated"}},{"Variacao_Percentual":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"d_moeda":{"Definition":{"Binding":{"ConceptualEntity":"d_moedas"}},"State":"Generated","Terms":[{"d moeda":{"State":"Generated"}},{"d_moedas":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"d_moeda.nome_completo":{"Definition":{"Binding":{"ConceptualEntity":"d_moedas","ConceptualProperty":"Nome_Completo"}},"State":"Generated","Terms":[{"nome completo":{"State":"Generated"}},{"Nome_Completo":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"d_moeda.ativo":{"Definition":{"Binding":{"ConceptualEntity":"d_moedas","ConceptualProperty":"Ativo"}},"State":"Generated","Terms":[{"ativo":{"State":"Generated"}}]},"d_moeda.tipo":{"Definition":{"Binding":{"ConceptualEntity":"d_moedas","ConceptualProperty":"Tipo"}},"State":"Generated","Terms":[{"tipo":{"State":"Generated"}}]},"parâmetro":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro"}},"State":"Generated","Terms":[{"parâmetro":{"State":"Generated"}}]},"parâmetro.parâmetro":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro","ConceptualProperty":"Parâmetro"}},"State":"Generated","Terms":[{"parâmetro":{"State":"Generated"}},{"parâmetro name":{"State":"Generated"}}],"NameType":"Name"},"parâmetro.parâmetro_campos":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro","ConceptualProperty":"Parâmetro Campos"}},"State":"Generated","Visibility":{"Value":"Hidden"},"Terms":[{"parâmetro campos":{"State":"Generated"}}]},"parâmetro.parâmetro_pedido":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro","ConceptualProperty":"Parâmetro Pedido"}},"State":"Generated","Visibility":{"Value":"Hidden"},"Terms":[{"parâmetro pedido":{"State":"Generated"}}]},"vw_calendario_dinamico":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"}},"State":"Generated","Terms":[{"vw calendario dinamico":{"State":"Generated"}},{"vw_Calendario_Dinamico":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.data":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Data"}},"State":"Generated","Terms":[{"data":{"State":"Generated"}},{"date":{"State":"Generated","Weight":0.7}},{"information":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.736}},{"fact":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.736}},{"info":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.736}},{"statistic":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.736}},{"document":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.714}},{"figure":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.714}},{"record":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.714}}],"SemanticType":"Time"},"vw_calendario_dinamico.ano":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ano"}},"State":"Generated","Terms":[{"ano":{"State":"Generated"}}]},"vw_calendario_dinamico.me":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Mes"}},"State":"Generated","Terms":[{"me":{"State":"Generated"}}]},"vw_calendario_dinamico.nome_me":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Nome_Mes"}},"State":"Generated","Terms":[{"nome me":{"State":"Generated"}},{"Nome_Mes":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.dia_semana":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Dia_Semana"}},"State":"Generated","Terms":[{"dia semana":{"State":"Generated"}},{"Dia_Semana":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.dias_passado":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Dias_Passados"}},"State":"Generated","Terms":[{"dias passado":{"State":"Generated"}},{"Dias_Passados":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimos_7_dias":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimos_7_Dias"}},"State":"Generated","Terms":[{"ultimos 7 dias":{"State":"Generated"}},{"ultimo 7 dias":{"Type":"Noun","State":"Generated","Weight":0.78}},{"Ultimos_7_Dias":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimos_14_dias":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimos_14_Dias"}},"State":"Generated","Terms":[{"ultimos 14 dias":{"State":"Generated"}},{"ultimo 14 dias":{"Type":"Noun","State":"Generated","Weight":0.78}},{"Ultimos_14_Dias":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimos_30_dias":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimos_30_Dias"}},"State":"Generated","Terms":[{"ultimos 30 dias":{"State":"Generated"}},{"ultimo 30 dias":{"Type":"Noun","State":"Generated","Weight":0.78}},{"Ultimos_30_Dias":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimos_60_dias":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimos_60_Dias"}},"State":"Generated","Terms":[{"ultimos 60 dias":{"State":"Generated"}},{"ultimo 60 dias":{"Type":"Noun","State":"Generated","Weight":0.78}},{"Ultimos_60_Dias":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimos_90_dias":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimos_90_Dias"}},"State":"Generated","Terms":[{"ultimos 90 dias":{"State":"Generated"}},{"ultimo 90 dias":{"Type":"Noun","State":"Generated","Weight":0.78}},{"Ultimos_90_Dias":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimos_180_dias":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimos_180_Dias"}},"State":"Generated","Terms":[{"ultimos 180 dias":{"State":"Generated"}},{"ultimo 180 dias":{"Type":"Noun","State":"Generated","Weight":0.78}},{"Ultimos_180_Dias":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.ultimo_ano":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Ultimo_Ano"}},"State":"Generated","Terms":[{"ultimo ano":{"State":"Generated"}},{"Ultimo_Ano":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"vw_calendario_dinamico.todo_periodo":{"Definition":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico","ConceptualProperty":"Todo_Periodo"}},"State":"Generated","Terms":[{"todo periodo":{"State":"Generated"}},{"Todo_Periodo":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"parâmetro_2":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro 2"}},"State":"Generated","Terms":[{"parâmetro 2":{"State":"Generated"}}]},"parâmetro_2.parâmetro":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro 2","ConceptualProperty":"Parâmetro"}},"State":"Generated","Terms":[{"parâmetro":{"State":"Generated"}}]},"parâmetro_2.parâmetro_campos":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro 2","ConceptualProperty":"Parâmetro Campos"}},"State":"Generated","Visibility":{"Value":"Hidden"},"Terms":[{"parâmetro campos":{"State":"Generated"}}]},"parâmetro_2.parâmetro_pedido":{"Definition":{"Binding":{"ConceptualEntity":"Parâmetro 2","ConceptualProperty":"Parâmetro Pedido"}},"State":"Generated","Visibility":{"Value":"Hidden"},"Terms":[{"parâmetro pedido":{"State":"Generated"}}]},"entity__medida":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas"}},"State":"Generated","Terms":[{"_medida":{"State":"Generated"}}]},"entity__medida.preco_selecionado":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco Selecionado"}},"State":"Generated","Terms":[{"preco selecionado":{"State":"Generated"}},{"Preço":{"State":"Suggested","Source":{"Type":"External","Agent":"PowerBI.VisualColumnRename"},"Weight":0.9}}]},"entity__medida.market_cap_selecionado":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Market Cap Selecionado"}},"State":"Generated","Terms":[{"market cap selecionado":{"State":"Generated"}}]},"entity__medida.market_cap_base_BRL":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Market Cap Base BRL"}},"State":"Generated","Terms":[{"market cap base BRL":{"State":"Generated"}},{"BRL":{"State":"Generated","Weight":0.97}},{"base BRL":{"State":"Generated","Weight":0.97}},{"cap base BRL":{"State":"Generated","Weight":0.97}}]},"entity__medida.variacao_dinamica_":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Variacao Dinamica %"}},"State":"Generated","Terms":[{"variacao dinamica %":{"State":"Generated"}},{"variacao dinamica percentage":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.762}},{"variacao dinamica pct":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.739}},{"Variação do Periodo":{"State":"Suggested","Source":{"Type":"External","Agent":"PowerBI.VisualColumnRename"},"Weight":0.9}}]},"entity__medida.drawdown_":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Drawdown %"}},"State":"Generated","Terms":[{"drawdown %":{"State":"Generated"}},{"drawdown percentage":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.75}},{"drawdown pct":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.727}}]},"entity__medida.variacao_nominal":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Variacao Nominal"}},"State":"Generated","Terms":[{"variacao nominal":{"State":"Generated"}}]},"entity__medida.icone_tendencia":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Icone Tendencia"}},"State":"Generated","Terms":[{"icone tendencia":{"State":"Generated"}}]},"entity__medida.media_movel_30_dias":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Media Movel 30 Dias"}},"State":"Generated","Terms":[{"media movel 30 dias":{"State":"Generated"}},{"Média Móvel 30 Dias":{"State":"Suggested","Source":{"Type":"External","Agent":"PowerBI.VisualColumnRename"},"Weight":0.9}}]},"entity__medida.preco_base_BRL":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco Base BRL"}},"State":"Generated","Terms":[{"preco base BRL":{"State":"Generated"}}]},"entity__medida.preco_base_USD":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco Base USD"}},"State":"Generated","Terms":[{"preco base USD":{"State":"Generated"}}]},"entity__medida.market_cap_base_USD":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Market Cap Base USD"}},"State":"Generated","Terms":[{"market cap base USD":{"State":"Generated"}},{"USD":{"State":"Generated","Weight":0.97}},{"base USD":{"State":"Generated","Weight":0.97}},{"cap base USD":{"State":"Generated","Weight":0.97}}]},"entity__medida.media_movel_7_dias":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Media Movel 7 Dias"}},"State":"Generated","Terms":[{"media movel 7 dias":{"State":"Generated"}}]},"entity__medida.maxima_historica":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Maxima Historica"}},"State":"Generated","Terms":[{"maxima historica":{"State":"Generated"}}]},"entity__medida.minima_historica":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Minima Historica"}},"State":"Generated","Terms":[{"minima historica":{"State":"Generated"}}]},"entity__medida.volatilidade_desvio_padrao":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Volatilidade (Desvio Padrao)"}},"State":"Generated","Terms":[{"volatilidade (desvio padrao)":{"State":"Generated"}},{"volatilidade":{"State":"Generated","Weight":0.75}}]},"entity__medida.preco_WoW_":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco WoW %"}},"State":"Generated","Terms":[{"preco WoW %":{"State":"Generated"}},{"preco wow percentage":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.762}},{"preco wow pct":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.739}}]},"entity__medida.preco_MoM_":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco MoM %"}},"State":"Generated","Terms":[{"preco MoM %":{"State":"Generated"}},{"preco mom percentage":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.762}},{"preco mom pct":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.739}}]},"entity__medida.market_share_":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Market Share %"}},"State":"Generated","Terms":[{"market share %":{"State":"Generated"}},{"market share percentage":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.762}},{"market share pct":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.739}}]},"entity__medida.cor_condicional_tendencia":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Cor Condicional Tendencia"}},"State":"Generated","Terms":[{"cor condicional tendencia":{"State":"Generated"}}]},"entity__medida.titulo_dinamico_dashboard":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Titulo Dinamico Dashboard"}},"State":"Generated","Terms":[{"titulo dinamico dashboard":{"State":"Generated"}},{"titulo dinamico console":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.492}},{"titulo dinamico dash":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.492}}]},"vw_dashboard_completa.moeda_original":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Moeda_Original"}},"State":"Generated","Terms":[{"moeda original":{"State":"Generated"}},{"Moeda_Original":{"Type":"Noun","State":"Generated","Weight":0.99}},{"moeda archetype":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.451}},{"moeda exemplar":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.451}},{"moeda template":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.451}}]},"vw_dashboard_completa.open_BRL":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Open_BRL"}},"State":"Generated","Terms":[{"open BRL":{"State":"Generated"}},{"Open_BRL":{"Type":"Noun","State":"Generated","Weight":0.99}},{"BRL":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.high_BRL":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"High_BRL"}},"State":"Generated","Terms":[{"high BRL":{"State":"Generated"}},{"High_BRL":{"Type":"Noun","State":"Generated","Weight":0.99}},{"BRL":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.low_BRL":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Low_BRL"}},"State":"Generated","Terms":[{"low BRL":{"State":"Generated"}},{"Low_BRL":{"Type":"Noun","State":"Generated","Weight":0.99}},{"BRL":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.open_USD":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Open_USD"}},"State":"Generated","Terms":[{"open USD":{"State":"Generated"}},{"Open_USD":{"Type":"Noun","State":"Generated","Weight":0.99}},{"USD":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.high_USD":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"High_USD"}},"State":"Generated","Terms":[{"high USD":{"State":"Generated"}},{"High_USD":{"Type":"Noun","State":"Generated","Weight":0.99}},{"USD":{"State":"Generated","Weight":0.97}}]},"vw_dashboard_completa.low_USD":{"Definition":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa","ConceptualProperty":"Low_USD"}},"State":"Generated","Terms":[{"low USD":{"State":"Generated"}},{"Low_USD":{"Type":"Noun","State":"Generated","Weight":0.99}},{"USD":{"State":"Generated","Weight":0.97}}]},"entity__medida.preco_minigrafico_dinamico":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco Minigrafico Dinamico"}},"State":"Generated","Terms":[{"preco minigrafico dinamico":{"State":"Generated"}}]},"entity__medida.ocultar_datas_minigrafico":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Ocultar Datas Minigrafico"}},"State":"Generated","Terms":[{"ocultar datas minigrafico":{"State":"Generated"}}]},"entity__medida.eixo_y_maximo":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Eixo Y Maximo"}},"State":"Generated","Terms":[{"eixo y maximo":{"State":"Generated"}}]},"entity__medida.eixo_y_minimo":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Eixo Y Minimo"}},"State":"Generated","Terms":[{"eixo y minimo":{"State":"Generated"}}]},"entity__medida.preco_atual":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Preco Atual"}},"State":"Generated","Terms":[{"preco atual":{"State":"Generated"}},{"Preço Atual":{"State":"Suggested","Source":{"Type":"External","Agent":"PowerBI.VisualColumnRename"},"Weight":0.9}}]},"entity__medida.variacao_24h_":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Variacao 24h %"}},"State":"Generated","Terms":[{"variacao 24h %":{"State":"Generated"}},{"variacao 24h percentage":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.762}},{"variacao 24h pct":{"Type":"Noun","State":"Suggested","Source":{"Agent":"Thesaurus"},"Weight":0.739}}]},"entity__medida.atual":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"Atual"}},"State":"Generated","Terms":[{"atual":{"State":"Generated"}}]},"entity__medida.st_preco_atual":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"St_preco_atual"}},"State":"Generated","Terms":[{"st preco atual":{"State":"Generated"}},{"St_preco_atual":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"entity__medida.st_variacao":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"St_variacao"}},"State":"Generated","Terms":[{"st variacao":{"State":"Generated"}},{"St_variacao":{"Type":"Noun","State":"Generated","Weight":0.99}}]},"entity__medida.st_maxima":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"St_Maxima"}},"State":"Generated","Terms":[{"st maxima":{"State":"Generated"}},{"St_Maxima":{"Type":"Noun","State":"Generated","Weight":0.99}},{"maxima":{"State":"Generated","Weight":0.97}}]},"entity__medida.st_minima":{"Definition":{"Binding":{"ConceptualEntity":"_Medidas","ConceptualProperty":"St_Minima"}},"State":"Generated","Terms":[{"st minima":{"State":"Generated"}},{"St_Minima":{"Type":"Noun","State":"Generated","Weight":0.99}},{"minima":{"State":"Generated","Weight":0.97}}]}},"Relationships":{"vw_dashboard_completa_has_d_moeda":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"d_moeda":{"Target":{"Entity":"d_moeda"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"d_moeda"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_d_moedas"},{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"vw_dashboard_completa"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_vw_dashboard_completas"}]},"parâmetro_has_entity__medida_st_minima":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.st_minima":{"Target":{"Entity":"entity__medida.st_minima"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.st_minima"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_st_minima"}]},"parâmetro_has_entity__medida_st_maxima":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.st_maxima":{"Target":{"Entity":"entity__medida.st_maxima"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.st_maxima"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_st_maxima"}]},"parâmetro_has_entity__medida_st_variacao":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.st_variacao":{"Target":{"Entity":"entity__medida.st_variacao"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.st_variacao"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_st_variacao"}]},"parâmetro_has_entity__medida_st_preco_atual":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.st_preco_atual":{"Target":{"Entity":"entity__medida.st_preco_atual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.st_preco_atual"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_st_preco_atual"}]},"vw_dashboard_completa_has_entity__medida_atual":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.atual":{"Target":{"Entity":"entity__medida.atual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.atual"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_atual"}]},"parâmetro_has_entity__medida_atual":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.atual":{"Target":{"Entity":"entity__medida.atual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.atual"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_atual"}]},"vw_dashboard_completa_has_entity__medida_variacao_24h_":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.variacao_24h_":{"Target":{"Entity":"entity__medida.variacao_24h_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.variacao_24h_"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_variacao_24h_"}]},"parâmetro_has_entity__medida_variacao_24h_":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.variacao_24h_":{"Target":{"Entity":"entity__medida.variacao_24h_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.variacao_24h_"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_variacao_24h_"}]},"vw_dashboard_completa_has_entity__medida_preco_atual":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_atual":{"Target":{"Entity":"entity__medida.preco_atual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_atual"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_atual"}]},"vw_calendario_dinamico_has_entity__medida_preco_atual":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"entity__medida.preco_atual":{"Target":{"Entity":"entity__medida.preco_atual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"entity__medida.preco_atual"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_preco_atual"}]},"parâmetro_has_entity__medida_preco_atual":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.preco_atual":{"Target":{"Entity":"entity__medida.preco_atual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.preco_atual"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_preco_atual"}]},"vw_dashboard_completa_has_entity__medida_eixo_y_minimo":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.eixo_y_minimo":{"Target":{"Entity":"entity__medida.eixo_y_minimo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.eixo_y_minimo"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_eixo_y_minimo"}]},"vw_calendario_dinamico_has_entity__medida_eixo_y_minimo":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"entity__medida.eixo_y_minimo":{"Target":{"Entity":"entity__medida.eixo_y_minimo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"entity__medida.eixo_y_minimo"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_eixo_y_minimo"}]},"parâmetro_has_entity__medida_eixo_y_minimo":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.eixo_y_minimo":{"Target":{"Entity":"entity__medida.eixo_y_minimo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.eixo_y_minimo"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_eixo_y_minimo"}]},"vw_dashboard_completa_has_entity__medida_eixo_y_maximo":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.eixo_y_maximo":{"Target":{"Entity":"entity__medida.eixo_y_maximo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.eixo_y_maximo"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_eixo_y_maximo"}]},"vw_calendario_dinamico_has_entity__medida_eixo_y_maximo":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"entity__medida.eixo_y_maximo":{"Target":{"Entity":"entity__medida.eixo_y_maximo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"entity__medida.eixo_y_maximo"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_eixo_y_maximo"}]},"parâmetro_has_entity__medida_eixo_y_maximo":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.eixo_y_maximo":{"Target":{"Entity":"entity__medida.eixo_y_maximo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.eixo_y_maximo"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_eixo_y_maximo"}]},"vw_calendario_dinamico_has_entity__medida_ocultar_datas_minigrafico":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"entity__medida.ocultar_datas_minigrafico":{"Target":{"Entity":"entity__medida.ocultar_datas_minigrafico"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"entity__medida.ocultar_datas_minigrafico"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ocultar_datas_minigrafico"}]},"parâmetro_2_has_entity__medida_ocultar_datas_minigrafico":{"Binding":{"ConceptualEntity":"Parâmetro 2"},"State":"Generated","Roles":{"parâmetro_2":{"Target":{"Entity":"parâmetro_2"}},"entity__medida.ocultar_datas_minigrafico":{"Target":{"Entity":"entity__medida.ocultar_datas_minigrafico"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro_2"},"Object":{"Role":"entity__medida.ocultar_datas_minigrafico"}},"State":"Generated","Weight":0.99,"ID":"parâmetro_2_have_ocultar_datas_minigrafico"}]},"vw_dashboard_completa_has_entity__medida_preco_minigrafico_dinamico":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_minigrafico_dinamico":{"Target":{"Entity":"entity__medida.preco_minigrafico_dinamico"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_minigrafico_dinamico"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_minigrafico_dinamico"}]},"parâmetro_has_entity__medida_preco_minigrafico_dinamico":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.preco_minigrafico_dinamico":{"Target":{"Entity":"entity__medida.preco_minigrafico_dinamico"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.preco_minigrafico_dinamico"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_preco_minigrafico_dinamico"}]},"vw_dashboard_completa_has_low_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.low_USD":{"Target":{"Entity":"vw_dashboard_completa.low_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.low_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_low_USD"}]},"vw_dashboard_completa_has_high_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.high_USD":{"Target":{"Entity":"vw_dashboard_completa.high_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.high_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_high_USD"}]},"vw_dashboard_completa_has_open_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.open_USD":{"Target":{"Entity":"vw_dashboard_completa.open_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.open_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_open_USD"}]},"vw_dashboard_completa_has_low_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.low_BRL":{"Target":{"Entity":"vw_dashboard_completa.low_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.low_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_low_BRLs"}]},"vw_dashboard_completa_has_high_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.high_BRL":{"Target":{"Entity":"vw_dashboard_completa.high_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.high_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_high_BRLs"}]},"vw_dashboard_completa_has_open_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.open_BRL":{"Target":{"Entity":"vw_dashboard_completa.open_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.open_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_open_BRLs"}]},"vw_dashboard_completa_has_moeda_original":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.moeda_original":{"Target":{"Entity":"vw_dashboard_completa.moeda_original"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.moeda_original"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_moeda_originals"}]},"d_moeda_has_entity__medida_titulo_dinamico_dashboard":{"Binding":{"ConceptualEntity":"d_moedas"},"State":"Generated","Roles":{"d_moeda":{"Target":{"Entity":"d_moeda"}},"entity__medida.titulo_dinamico_dashboard":{"Target":{"Entity":"entity__medida.titulo_dinamico_dashboard"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"entity__medida.titulo_dinamico_dashboard"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_titulo_dinamico_dashboard"}]},"parâmetro_has_entity__medida_titulo_dinamico_dashboard":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.titulo_dinamico_dashboard":{"Target":{"Entity":"entity__medida.titulo_dinamico_dashboard"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.titulo_dinamico_dashboard"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_titulo_dinamico_dashboard"}]},"vw_dashboard_completa_has_entity__medida_cor_condicional_tendencia":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.cor_condicional_tendencia":{"Target":{"Entity":"entity__medida.cor_condicional_tendencia"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.cor_condicional_tendencia"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_cor_condicional_tendencia"}]},"parâmetro_2_has_entity__medida_cor_condicional_tendencia":{"Binding":{"ConceptualEntity":"Parâmetro 2"},"State":"Generated","Roles":{"parâmetro_2":{"Target":{"Entity":"parâmetro_2"}},"entity__medida.cor_condicional_tendencia":{"Target":{"Entity":"entity__medida.cor_condicional_tendencia"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro_2"},"Object":{"Role":"entity__medida.cor_condicional_tendencia"}},"State":"Generated","Weight":0.99,"ID":"parâmetro_2_have_cor_condicional_tendencia"}]},"parâmetro_has_entity__medida_cor_condicional_tendencia":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.cor_condicional_tendencia":{"Target":{"Entity":"entity__medida.cor_condicional_tendencia"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.cor_condicional_tendencia"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_cor_condicional_tendencia"}]},"vw_dashboard_completa_has_entity__medida_market_share_":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.market_share_":{"Target":{"Entity":"entity__medida.market_share_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.market_share_"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_market_share_"}]},"parâmetro_has_entity__medida_market_share_":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.market_share_":{"Target":{"Entity":"entity__medida.market_share_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.market_share_"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_market_share_"}]},"vw_dashboard_completa_has_entity__medida_preco_MoM_":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_MoM_":{"Target":{"Entity":"entity__medida.preco_MoM_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_MoM_"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_MoM_"}]},"parâmetro_has_entity__medida_preco_MoM_":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.preco_MoM_":{"Target":{"Entity":"entity__medida.preco_MoM_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.preco_MoM_"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_preco_MoM_"}]},"vw_dashboard_completa_has_entity__medida_preco_WoW_":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_WoW_":{"Target":{"Entity":"entity__medida.preco_WoW_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_WoW_"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_WoW_"}]},"parâmetro_has_entity__medida_preco_WoW_":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.preco_WoW_":{"Target":{"Entity":"entity__medida.preco_WoW_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.preco_WoW_"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_preco_WoW_"}]},"vw_dashboard_completa_has_entity__medida_volatilidade_desvio_padrao":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.volatilidade_desvio_padrao":{"Target":{"Entity":"entity__medida.volatilidade_desvio_padrao"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.volatilidade_desvio_padrao"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_volatilidade_desvio_padrao"}]},"parâmetro_2_has_entity__medida_volatilidade_desvio_padrao":{"Binding":{"ConceptualEntity":"Parâmetro 2"},"State":"Generated","Roles":{"parâmetro_2":{"Target":{"Entity":"parâmetro_2"}},"entity__medida.volatilidade_desvio_padrao":{"Target":{"Entity":"entity__medida.volatilidade_desvio_padrao"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro_2"},"Object":{"Role":"entity__medida.volatilidade_desvio_padrao"}},"State":"Generated","Weight":0.99,"ID":"parâmetro_2_have_volatilidade_desvio_padrao"}]},"parâmetro_has_entity__medida_volatilidade_desvio_padrao":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.volatilidade_desvio_padrao":{"Target":{"Entity":"entity__medida.volatilidade_desvio_padrao"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.volatilidade_desvio_padrao"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_volatilidade_desvio_padrao"}]},"vw_dashboard_completa_has_entity__medida_minima_historica":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.minima_historica":{"Target":{"Entity":"entity__medida.minima_historica"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.minima_historica"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_minima_historica"}]},"parâmetro_has_entity__medida_minima_historica":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.minima_historica":{"Target":{"Entity":"entity__medida.minima_historica"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.minima_historica"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_minima_historica"}]},"vw_dashboard_completa_has_entity__medida_maxima_historica":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.maxima_historica":{"Target":{"Entity":"entity__medida.maxima_historica"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.maxima_historica"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_maxima_historica"}]},"parâmetro_has_entity__medida_maxima_historica":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.maxima_historica":{"Target":{"Entity":"entity__medida.maxima_historica"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.maxima_historica"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_maxima_historica"}]},"entity__medida_has_media_movel_7_dias":{"Binding":{"ConceptualEntity":"_Medidas"},"State":"Generated","Roles":{"entity__medida":{"Target":{"Entity":"entity__medida"}},"entity__medida.media_movel_7_dias":{"Target":{"Entity":"entity__medida.media_movel_7_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"entity__medida"},"Object":{"Role":"entity__medida.media_movel_7_dias"}},"State":"Generated","Weight":0.99,"ID":"Phrasing_medidas_have_media_movel_7_dias"}]},"vw_dashboard_completa_has_entity__medida_market_cap_base_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.market_cap_base_USD":{"Target":{"Entity":"entity__medida.market_cap_base_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.market_cap_base_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_market_cap_base_USD"}]},"vw_dashboard_completa_has_entity__medida_preco_base_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_base_USD":{"Target":{"Entity":"entity__medida.preco_base_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_base_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_base_USD"}]},"vw_dashboard_completa_has_entity__medida_preco_base_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_base_BRL":{"Target":{"Entity":"entity__medida.preco_base_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_base_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_base_BRL"}]},"vw_dashboard_completa_has_entity__medida_media_movel_30_dias":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.media_movel_30_dias":{"Target":{"Entity":"entity__medida.media_movel_30_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.media_movel_30_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_media_movel_30_dias"}]},"vw_calendario_dinamico_has_entity__medida_media_movel_30_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"entity__medida.media_movel_30_dias":{"Target":{"Entity":"entity__medida.media_movel_30_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"entity__medida.media_movel_30_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_media_movel_30_dias"}]},"parâmetro_has_entity__medida_media_movel_30_dias":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.media_movel_30_dias":{"Target":{"Entity":"entity__medida.media_movel_30_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.media_movel_30_dias"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_media_movel_30_dias"}]},"vw_dashboard_completa_has_entity__medida_icone_tendencia":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.icone_tendencia":{"Target":{"Entity":"entity__medida.icone_tendencia"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.icone_tendencia"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_icone_tendencia"}]},"parâmetro_2_has_entity__medida_icone_tendencia":{"Binding":{"ConceptualEntity":"Parâmetro 2"},"State":"Generated","Roles":{"parâmetro_2":{"Target":{"Entity":"parâmetro_2"}},"entity__medida.icone_tendencia":{"Target":{"Entity":"entity__medida.icone_tendencia"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro_2"},"Object":{"Role":"entity__medida.icone_tendencia"}},"State":"Generated","Weight":0.99,"ID":"parâmetro_2_have_icone_tendencia"}]},"parâmetro_has_entity__medida_icone_tendencia":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.icone_tendencia":{"Target":{"Entity":"entity__medida.icone_tendencia"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.icone_tendencia"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_icone_tendencia"}]},"vw_dashboard_completa_has_entity__medida_variacao_nominal":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.variacao_nominal":{"Target":{"Entity":"entity__medida.variacao_nominal"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.variacao_nominal"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_variacao_nominal"}]},"parâmetro_has_entity__medida_variacao_nominal":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.variacao_nominal":{"Target":{"Entity":"entity__medida.variacao_nominal"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.variacao_nominal"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_variacao_nominal"}]},"vw_dashboard_completa_has_entity__medida_drawdown_":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.drawdown_":{"Target":{"Entity":"entity__medida.drawdown_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.drawdown_"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_drawdown_"}]},"parâmetro_has_entity__medida_drawdown_":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.drawdown_":{"Target":{"Entity":"entity__medida.drawdown_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.drawdown_"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_drawdown_"}]},"vw_dashboard_completa_has_entity__medida_variacao_dinamica_":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.variacao_dinamica_":{"Target":{"Entity":"entity__medida.variacao_dinamica_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.variacao_dinamica_"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_variacao_dinamica_"}]},"parâmetro_2_has_entity__medida_variacao_dinamica_":{"Binding":{"ConceptualEntity":"Parâmetro 2"},"State":"Generated","Roles":{"parâmetro_2":{"Target":{"Entity":"parâmetro_2"}},"entity__medida.variacao_dinamica_":{"Target":{"Entity":"entity__medida.variacao_dinamica_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro_2"},"Object":{"Role":"entity__medida.variacao_dinamica_"}},"State":"Generated","Weight":0.99,"ID":"parâmetro_2_have_variacao_dinamica_"}]},"parâmetro_has_entity__medida_variacao_dinamica_":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.variacao_dinamica_":{"Target":{"Entity":"entity__medida.variacao_dinamica_"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.variacao_dinamica_"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_variacao_dinamica_"}]},"vw_dashboard_completa_has_entity__medida_market_cap_base_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.market_cap_base_BRL":{"Target":{"Entity":"entity__medida.market_cap_base_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.market_cap_base_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_market_cap_base_BRL"}]},"vw_dashboard_completa_has_entity__medida_market_cap_selecionado":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.market_cap_selecionado":{"Target":{"Entity":"entity__medida.market_cap_selecionado"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.market_cap_selecionado"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_market_cap_selecionado"}]},"parâmetro_has_entity__medida_market_cap_selecionado":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.market_cap_selecionado":{"Target":{"Entity":"entity__medida.market_cap_selecionado"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.market_cap_selecionado"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_market_cap_selecionado"}]},"vw_dashboard_completa_has_entity__medida_preco_selecionado":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"entity__medida.preco_selecionado":{"Target":{"Entity":"entity__medida.preco_selecionado"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"entity__medida.preco_selecionado"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_selecionado"}]},"parâmetro_has_entity__medida_preco_selecionado":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"entity__medida.preco_selecionado":{"Target":{"Entity":"entity__medida.preco_selecionado"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"entity__medida.preco_selecionado"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_preco_selecionado"}]},"parâmetro_2_has_parâmetro":{"Binding":{"ConceptualEntity":"Parâmetro 2"},"State":"Generated","Roles":{"parâmetro_2":{"Target":{"Entity":"parâmetro_2"}},"parâmetro_2.parâmetro":{"Target":{"Entity":"parâmetro_2.parâmetro"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro_2"},"Object":{"Role":"parâmetro_2.parâmetro"}},"State":"Generated","Weight":0.99,"ID":"parâmetro_2_have_parâmetros"}]},"vw_calendario_dinamico_has_todo_periodo":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.todo_periodo":{"Target":{"Entity":"vw_calendario_dinamico.todo_periodo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.todo_periodo"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_todo_periodos"}]},"vw_calendario_dinamico_has_ultimo_ano":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimo_ano":{"Target":{"Entity":"vw_calendario_dinamico.ultimo_ano"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimo_ano"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimo_anos"}]},"vw_calendario_dinamico_has_ultimos_180_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimos_180_dias":{"Target":{"Entity":"vw_calendario_dinamico.ultimos_180_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimos_180_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimos_180_dias"}]},"vw_calendario_dinamico_has_ultimos_90_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimos_90_dias":{"Target":{"Entity":"vw_calendario_dinamico.ultimos_90_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimos_90_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimos_90_dias"}]},"vw_calendario_dinamico_has_ultimos_60_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimos_60_dias":{"Target":{"Entity":"vw_calendario_dinamico.ultimos_60_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimos_60_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimos_60_dias"}]},"vw_calendario_dinamico_has_ultimos_30_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimos_30_dias":{"Target":{"Entity":"vw_calendario_dinamico.ultimos_30_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimos_30_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimos_30_dias"}]},"vw_calendario_dinamico_has_ultimos_14_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimos_14_dias":{"Target":{"Entity":"vw_calendario_dinamico.ultimos_14_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimos_14_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimos_14_dias"}]},"vw_calendario_dinamico_has_ultimos_7_dias":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ultimos_7_dias":{"Target":{"Entity":"vw_calendario_dinamico.ultimos_7_dias"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ultimos_7_dias"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_ultimos_7_dias"}]},"vw_calendario_dinamico_has_dias_passado":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.dias_passado":{"Target":{"Entity":"vw_calendario_dinamico.dias_passado"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.dias_passado"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_dias_passados"}]},"vw_calendario_dinamico_has_dia_semana":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.dia_semana":{"Target":{"Entity":"vw_calendario_dinamico.dia_semana"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.dia_semana"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_dia_semanas"}]},"vw_calendario_dinamico_has_nome_me":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.nome_me":{"Target":{"Entity":"vw_calendario_dinamico.nome_me"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.nome_me"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_nome_me"}]},"vw_calendario_dinamico_has_me":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.me":{"Target":{"Entity":"vw_calendario_dinamico.me"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.me"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_me"}]},"vw_calendario_dinamico_has_ano":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.ano":{"Target":{"Entity":"vw_calendario_dinamico.ano"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.ano"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_anos"}]},"vw_calendario_dinamico_has_data":{"Binding":{"ConceptualEntity":"vw_Calendario_Dinamico"},"State":"Generated","Roles":{"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}},"vw_calendario_dinamico.data":{"Target":{"Entity":"vw_calendario_dinamico.data"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_calendario_dinamico.data"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_data"}]},"parâmetro_has_parâmetro":{"Binding":{"ConceptualEntity":"Parâmetro"},"State":"Generated","Roles":{"parâmetro":{"Target":{"Entity":"parâmetro"}},"parâmetro.parâmetro":{"Target":{"Entity":"parâmetro.parâmetro"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"parâmetro"},"Object":{"Role":"parâmetro.parâmetro"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_have_parâmetros"},{"Name":{"Subject":{"Role":"parâmetro"},"Name":{"Role":"parâmetro.parâmetro"}},"State":"Generated","Weight":0.99,"ID":"parâmetros_are_names_IDs_of_parâmetros"}]},"d_moeda_has_tipo":{"Binding":{"ConceptualEntity":"d_moedas"},"State":"Generated","Roles":{"d_moeda":{"Target":{"Entity":"d_moeda"}},"d_moeda.tipo":{"Target":{"Entity":"d_moeda.tipo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"d_moeda.tipo"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_tipos"}]},"d_moeda_has_ativo":{"Binding":{"ConceptualEntity":"d_moedas"},"State":"Generated","Roles":{"d_moeda":{"Target":{"Entity":"d_moeda"}},"d_moeda.ativo":{"Target":{"Entity":"d_moeda.ativo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"d_moeda.ativo"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_ativos"}]},"d_moeda_has_nome_completo":{"Binding":{"ConceptualEntity":"d_moedas"},"State":"Generated","Roles":{"d_moeda":{"Target":{"Entity":"d_moeda"}},"d_moeda.nome_completo":{"Target":{"Entity":"d_moeda.nome_completo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"d_moeda.nome_completo"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_nome_completos"}]},"vw_dashboard_completa_has_variacao_percentual":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.variacao_percentual":{"Target":{"Entity":"vw_dashboard_completa.variacao_percentual"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.variacao_percentual"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_variacao_percentuals"}]},"vw_dashboard_completa_has_preco_ontem_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.preco_ontem_USD":{"Target":{"Entity":"vw_dashboard_completa.preco_ontem_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.preco_ontem_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_ontem_USD"}]},"vw_dashboard_completa_has_preco_ontem":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.preco_ontem":{"Target":{"Entity":"vw_dashboard_completa.preco_ontem"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.preco_ontem"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_ontems"}]},"vw_dashboard_completa_has_market_cap_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.market_cap_USD":{"Target":{"Entity":"vw_dashboard_completa.market_cap_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.market_cap_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_market_cap_USD"}]},"vw_dashboard_completa_has_market_cap_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.market_cap_BRL":{"Target":{"Entity":"vw_dashboard_completa.market_cap_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.market_cap_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_market_cap_BRLs"}]},"vw_dashboard_completa_has_preco_USD":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.preco_USD":{"Target":{"Entity":"vw_dashboard_completa.preco_USD"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.preco_USD"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_USD"}]},"vw_dashboard_completa_has_preco_BRL":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.preco_BRL":{"Target":{"Entity":"vw_dashboard_completa.preco_BRL"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.preco_BRL"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_preco_BRLs"}]},"vw_dashboard_completa_has_tipo_mercado":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.tipo_mercado":{"Target":{"Entity":"vw_dashboard_completa.tipo_mercado"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.tipo_mercado"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_tipo_mercado"}]},"vw_dashboard_completa_has_date":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_dashboard_completa.date":{"Target":{"Entity":"vw_dashboard_completa.date"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_dashboard_completa.date"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_dates"}]},"d_moeda_has_simbolo":{"Binding":{"ConceptualEntity":"d_moedas"},"State":"Generated","Roles":{"d_moeda":{"Target":{"Entity":"d_moeda"}},"d_moeda.simbolo":{"Target":{"Entity":"d_moeda.simbolo"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"d_moeda.simbolo"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_simbolos"}]},"d_moeda_has_URL_imagem":{"Binding":{"ConceptualEntity":"d_moedas"},"State":"Generated","Roles":{"d_moeda":{"Target":{"Entity":"d_moeda"}},"d_moeda.URL_imagem":{"Target":{"Entity":"d_moeda.URL_imagem"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"d_moeda"},"Object":{"Role":"d_moeda.URL_imagem"}},"State":"Generated","Weight":0.99,"ID":"d_moedas_have_URL_imagems"}]},"vw_dashboard_completa_has_vw_calendario_dinamico":{"Binding":{"ConceptualEntity":"vw_Dashboard_Completa"},"State":"Generated","Roles":{"vw_dashboard_completa":{"Target":{"Entity":"vw_dashboard_completa"}},"vw_calendario_dinamico":{"Target":{"Entity":"vw_calendario_dinamico"}}},"Phrasings":[{"Attribute":{"Subject":{"Role":"vw_dashboard_completa"},"Object":{"Role":"vw_calendario_dinamico"}},"State":"Generated","Weight":0.99,"ID":"vw_dashboard_completas_have_vw_calendario_dinamicos"},{"Attribute":{"Subject":{"Role":"vw_calendario_dinamico"},"Object":{"Role":"vw_dashboard_completa"}},"State":"Generated","Weight":0.99,"ID":"vw_calendario_dinamicos_have_vw_dashboard_completas"}]}},"Agents":{"Internal":{"Version":"1.1.0"}}}
+				contentType: json
+
+		annotation __PBI_TimeIntelligenceEnabled = 0
+
+		annotation PBI_QueryOrder = ["vw_Dashboard_Completa","d_moedas","vw_Calendario_Dinamico","_Medidas"]
+
+		annotation PBI_ProTooling = ["TMDLView_Desktop"]
+

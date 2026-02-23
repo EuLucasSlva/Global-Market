@@ -1,0 +1,54 @@
+table 'Parâmetro 2'
+	lineageTag: 99538d5b-6e3e-4002-9b1e-e0de10ff8bce
+
+	column Parâmetro
+		lineageTag: 87cf00e8-b3ed-4be6-b422-01ed3562f939
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parâmetro Pedido'
+
+		relatedColumnDetails
+			groupByColumn: 'Parâmetro Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parâmetro Campos'
+		isHidden
+		lineageTag: d4fd7a98-749c-4502-b61d-371948f280b0
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parâmetro Pedido'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parâmetro Pedido'
+		isHidden
+		formatString: 0
+		lineageTag: 09463d6a-d9a8-4092-9246-6a5ccd9c3037
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parâmetro 2' = calculated
+		mode: import
+		source =
+				{
+				    ("7D", NAMEOF('vw_Calendario_Dinamico'[Ultimos_7_Dias]), 0),
+				    ("14D", NAMEOF('vw_Calendario_Dinamico'[Ultimos_14_Dias]), 1),
+				    ("30D", NAMEOF('vw_Calendario_Dinamico'[Ultimos_30_Dias]), 2),
+				    ("60D", NAMEOF('vw_Calendario_Dinamico'[Ultimos_60_Dias]), 3),
+				    ("90D", NAMEOF('vw_Calendario_Dinamico'[Ultimos_90_Dias]), 4),
+				    ("180D", NAMEOF('vw_Calendario_Dinamico'[Ultimos_180_Dias]), 5),
+				    ("1Year", NAMEOF('vw_Calendario_Dinamico'[Ultimo_Ano]), 6),
+				    ("All", NAMEOF('vw_Calendario_Dinamico'[Todo_Periodo]), 7)
+				}
+
+	annotation PBI_Id = 784f519e29614142973a5a93cf346a13
+

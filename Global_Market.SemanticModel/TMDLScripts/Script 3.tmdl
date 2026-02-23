@@ -1,0 +1,95 @@
+createOrReplace
+	table _Medidas
+		lineageTag: 6153d302-632d-42f2-a465-ff0f93b4b3bb
+
+		measure 'Preco Selecionado' = 
+				VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido], 0)
+				VAR _Brl = MAX(vw_Dashboard_Completa[Preco_BRL])
+				VAR _Usd = MAX(vw_Dashboard_Completa[Preco_USD])
+				RETURN IF(_selecao = 0, _Brl, _Usd)
+			formatString: "#,##0.00"
+			displayFolder: "[01] Valores Base"
+			lineageTag: a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
+
+		measure 'Market Cap Selecionado' = 
+				VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido], 0)
+				VAR _Brl = SUM(vw_Dashboard_Completa[Market_Cap_BRL])
+				VAR _Usd = SUM(vw_Dashboard_Completa[Market_Cap_USD])
+				RETURN IF(_selecao = 0, _Brl, _Usd)
+			formatString: "#,##0.00"
+			displayFolder: "[01] Valores Base"
+			lineageTag: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+
+		measure 'Preco Ontem Selecionado' = 
+				VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido], 0)
+				VAR _Brl = SUM(vw_Dashboard_Completa[Preco_Ontem])
+				VAR _Usd = SUM(vw_Dashboard_Completa[Preco_Ontem_USD])
+				RETURN IF(_selecao = 0, _Brl, _Usd)
+			formatString: "#,##0.00"
+			displayFolder: "[02] Performance"
+			lineageTag: c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f
+
+		measure 'Variacao %' = 
+				VAR _Atual = [Preco Selecionado]
+				VAR _Anterior = [Preco Ontem Selecionado]
+				RETURN DIVIDE(_Atual - _Anterior, _Anterior)
+			formatString: "0.00%;-0.00%;0.00%"
+			displayFolder: "[02] Performance"
+			lineageTag: d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a
+
+		measure 'Maxima do Ativo' = 
+				CALCULATE(
+					MAXX(vw_Dashboard_Completa, [Preco Selecionado]),
+					ALLSELECTED(vw_Calendario_Dinamico)
+				)
+			formatString: "#,##0.00"
+			displayFolder: "[03] Analise Tecnica"
+			lineageTag: e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b
+
+		measure 'Minima do Ativo' = 
+				CALCULATE(
+					MINX(vw_Dashboard_Completa, [Preco Selecionado]),
+					ALLSELECTED(vw_Calendario_Dinamico)
+				)
+			formatString: "#,##0.00"
+			displayFolder: "[03] Analise Tecnica"
+			lineageTag: f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c
+
+		measure 'Drawdown %' = 
+				VAR _Topo = [Maxima do Ativo]
+				VAR _Atual = [Preco Selecionado]
+				RETURN DIVIDE(_Atual - _Topo, _Topo)
+			formatString: "0.00%"
+			displayFolder: "[03] Analise Tecnica"
+			lineageTag: a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d
+
+		measure 'Cor Condicional' = 
+				VAR _var = [Variacao %]
+				RETURN SWITCH(TRUE(), _var > 0, "#00E676", _var < 0, "#FF1744", "#BDBDBD")
+			displayFolder: "[04] Storytelling"
+			lineageTag: b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e
+
+		measure 'Icone Tendencia' = 
+				VAR _var = [Variacao %]
+				RETURN IF(_var > 0, "▲", "▼")
+			displayFolder: "[04] Storytelling"
+			lineageTag: c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f
+
+		measure 'Titulo Dinamico' = 
+				VAR _Ativo = SELECTEDVALUE(d_moedas[Nome_Completo], "Mercado Global")
+				VAR _Moeda = SELECTEDVALUE('Parâmetro'[Parâmetro], "BRL")
+				RETURN UPPER(_Ativo) & " - VISÃO EM " & _Moeda
+			displayFolder: "[04] Storytelling"
+			lineageTag: d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a
+
+		partition _Medidas = m
+			mode: import
+			source =
+					let
+						Fonte = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Coluna 1" = _t]),
+						#"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Coluna 1", Int64.Type}}),
+						#"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Coluna 1"})
+					in
+						#"Colunas Removidas"
+
+		annotation PBI_ResultType = Table

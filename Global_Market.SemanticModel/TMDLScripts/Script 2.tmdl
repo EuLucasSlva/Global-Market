@@ -1,0 +1,84 @@
+createorReplace _Medidas
+	lineageTag: measures-table-global-001
+
+	measure 'Preco Selecionado' = 
+		VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido], 0)
+		VAR _Brl = MAX(vw_Dashboard_Completa[Preco_BRL])
+		VAR _Usd = MAX(vw_Dashboard_Completa[Preco_USD])
+		RETURN IF(_selecao = 0, _Brl, _Usd)
+		formatString: "#,##0.00"
+		displayFolder: "[01] Valores Base\Preços"
+
+	measure 'Market Cap Selecionado' = 
+		VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido], 0)
+		VAR _Brl = SUM(vw_Dashboard_Completa[Market_Cap_BRL])
+		VAR _Usd = SUM(vw_Dashboard_Completa[Market_Cap_USD])
+		RETURN IF(_selecao = 0, _Brl, _Usd)
+		formatString: "#,##0.00"
+		displayFolder: "[01] Valores Base\Market Cap"
+
+	measure 'Preco Ontem' = 
+		VAR _selecao = SELECTEDVALUE('Parâmetro'[Parâmetro Pedido], 0)
+		VAR _Brl = SUM(vw_Dashboard_Completa[Preco_Ontem])
+		VAR _Usd = SUM(vw_Dashboard_Completa[Preco_Ontem_USD])
+		RETURN IF(_selecao = 0, _Brl, _Usd)
+		formatString: "#,##0.00"
+		displayFolder: "[02] Performance e Comparação"
+
+	measure 'Variacao % Periodo' = 
+		VAR _PrecoAtual = [Preco Selecionado]
+		VAR _PrecoInicial = 
+			CALCULATE(
+				[Preco Selecionado], 
+				FIRSTDATE(vw_Calendario_Dinamico[Data])
+			)
+		RETURN DIVIDE(_PrecoAtual - _PrecoInicial, _PrecoInicial)
+		formatString: "0.00%;-0.00%;0.00%"
+		displayFolder: "[02] Performance e Comparação"
+
+	measure 'Maxima Periodo' = CALCULATE(MAXX(vw_Dashboard_Completa, [Preco Selecionado]), ALLSELECTED(vw_Calendario_Dinamico))
+		formatString: "#,##0.00"
+		displayFolder: "[03] Análise Técnica\High/Low"
+
+	measure 'Minima Periodo' = CALCULATE(MINX(vw_Dashboard_Completa, [Preco Selecionado]), ALLSELECTED(vw_Calendario_Dinamico))
+		formatString: "#,##0.00"
+		displayFolder: "[03] Análise Técnica\High/Low"
+
+	measure 'Drawdown %' = 
+		VAR _Topo = [Maxima Periodo]
+		VAR _Atual = [Preco Selecionado]
+		RETURN DIVIDE(_Atual - _Topo, _Topo)
+		formatString: "0.00%"
+		displayFolder: "[03] Análise Técnica"
+
+	measure 'Cor Variacao' = 
+		VAR _var = [Variacao % Periodo]
+		RETURN 
+		SWITCH(
+			TRUE(),
+			_var > 0, "#00C853",
+			_var < 0, "#FF1744",
+			"#E0E0E0"
+		)
+		displayFolder: "[04] UI e Storytelling"
+
+	measure 'Icone Tendencia' = 
+		VAR _var = [Variacao % Periodo]
+		RETURN IF(_var > 0, "▲", "▼")
+		displayFolder: "[04] UI e Storytelling"
+
+	measure 'Titulo Dinamico Ativo' = 
+		VAR _Ativo = SELECTEDVALUE(d_moedas[Nome_Completo], "Mercado Global")
+		VAR _Moeda = SELECTEDVALUE('Parâmetro'[Parâmetro], "BRL")
+		RETURN UPPER(_Ativo) & " | Performance em " & _Moeda
+		displayFolder: "[04] UI e Storytelling"
+
+	partition _Medidas = calculated
+		mode: import
+		source = { ("Para organizar medidas", 0, 0) }
+
+	column 'Para organizar medidas'
+		isHidden
+		lineageTag: dummy-col-001
+		summarizeBy: none
+		sourceColumn: [Value1]

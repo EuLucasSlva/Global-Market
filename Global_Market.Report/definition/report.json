@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.1.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY25SU11",
+      "reportVersionAtImport": {
+        "visual": "2.4.0",
+        "report": "3.0.0",
+        "page": "2.3.0"
+      },
+      "type": "SharedResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "ScrollingTextVisual1448795304508",
+    "htmlContent443BE3AD55E043BF878BED274D3A6855"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY25SU11",
+          "path": "BaseThemes/CY25SU11.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Market_Overwiew37750961381348613.svg",
+          "path": "Market_Overwiew37750961381348613.svg",
+          "type": "Image"
+        },
+        {
+          "name": "Preco5528823039960475.svg",
+          "path": "Preco5528823039960475.svg",
+          "type": "Image"
+        },
+        {
+          "name": "Varia__o15549411496044585.svg",
+          "path": "Varia__o15549411496044585.svg",
+          "type": "Image"
+        },
+        {
+          "name": "UP14579289256563743.svg",
+          "path": "UP14579289256563743.svg",
+          "type": "Image"
+        },
+        {
+          "name": "Down5089539319436492.svg",
+          "path": "Down5089539319436492.svg",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

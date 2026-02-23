@@ -1,0 +1,48 @@
+table Parâmetro
+	lineageTag: 4ae3241a-a27b-431a-8bbb-85265dfbecd0
+
+	column Parâmetro
+		lineageTag: 3884d13b-5eb4-4054-a4d8-6d98be622cda
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parâmetro Pedido'
+
+		relatedColumnDetails
+			groupByColumn: 'Parâmetro Campos'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parâmetro Campos'
+		isHidden
+		lineageTag: 4fe4934d-7ff3-40f2-8100-f31606a1a5cc
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parâmetro Pedido'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parâmetro Pedido'
+		isHidden
+		formatString: 0
+		lineageTag: ddab8363-b02d-4da6-82aa-4b6fd1774ad7
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Parâmetro = calculated
+		mode: import
+		source =
+				{
+				    ("BRL", NAMEOF('vw_Dashboard_Completa'[Market_Cap_BRL]), 0),
+				    ("USD", NAMEOF('vw_Dashboard_Completa'[Market_Cap_USD]), 1)
+				}
+
+	annotation PBI_Id = 9468e39082aa4991a521d5e81b552581
+

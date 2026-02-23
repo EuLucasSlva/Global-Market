@@ -1,0 +1,76 @@
+table f_noticias_mercado
+	lineageTag: f6bd5a66-dab4-4281-9fd3-2533f29f4e34
+
+	column Data
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 17fbd22d-97ae-41b7-9e0d-470675c1a658
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Ativo
+		dataType: string
+		lineageTag: b51ca5a9-e742-4e06-95e0-4a69c3857ebf
+		summarizeBy: none
+		sourceColumn: Ativo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tipo
+		dataType: string
+		lineageTag: ee9ebf77-841e-4d47-954b-c52a5040e8b4
+		summarizeBy: none
+		sourceColumn: Tipo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Titulo
+		dataType: string
+		lineageTag: b2a6742c-1354-4733-9915-3d33c30aca95
+		summarizeBy: none
+		sourceColumn: Titulo
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fonte
+		dataType: string
+		lineageTag: 0c6ebb09-ad9e-4373-9d2e-ff0d12b5d4dc
+		summarizeBy: none
+		sourceColumn: Fonte
+
+		annotation SummarizationSetBy = Automatic
+
+	column Link
+		dataType: string
+		lineageTag: 33ecbf1f-d2be-43d0-9fda-38dc7fd703d0
+		summarizeBy: none
+		sourceColumn: Link
+
+		annotation SummarizationSetBy = Automatic
+
+	column UUID
+		dataType: string
+		lineageTag: 0258ce58-4b74-4f2e-8651-7731a8fb2fd9
+		summarizeBy: none
+		sourceColumn: UUID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition f_noticias_mercado = m
+		mode: import
+		source =
+				let
+				    Fonte = Sql.Database("binancesql.database.windows.net", "Criptomoedas"),
+				    dbo_tb_noticias_mercado = Fonte{[Schema="dbo",Item="tb_noticias_mercado"]}[Data],
+				    #"Duplicatas Removidas" = Table.Distinct(dbo_tb_noticias_mercado, {"Titulo"})
+				in
+				    #"Duplicatas Removidas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

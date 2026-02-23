@@ -1,0 +1,12 @@
+relationship AutoDetected_751b370a-fd0c-46b1-a546-df9c28ca4f3e
+	fromColumn: vw_Dashboard_Completa.Ativo
+	toColumn: d_moedas.Ativo
+
+relationship 0da41097-b945-e8a4-8b47-0a2127ba72d4
+	fromColumn: vw_Dashboard_Completa.Date
+	toColumn: vw_Calendario_Dinamico.Data
+
+relationship 391a289d-6a1c-3ca9-38c2-adafa6bd4521
+	fromColumn: f_noticias_mercado.Data
+	toColumn: vw_Calendario_Dinamico.Data
+
